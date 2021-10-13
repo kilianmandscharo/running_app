@@ -1,0 +1,20 @@
+rootProject.name = 'running'
+include ':@darron1217_react-native-background-geolocation-common'
+project(':@darron1217_react-native-background-geolocation-common').projectDir = new File(rootProject.projectDir, '../node_modules/@darron1217/react-native-background-geolocation/android/common')
+include ':@darron1217_react-native-background-geolocation'
+project(':@darron1217_react-native-background-geolocation').projectDir = new File(rootProject.projectDir, '../node_modules/@darron1217/react-native-background-geolocation/android/lib')
+
+include ':react-native-charts-wrapper'
+project(':react-native-charts-wrapper').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-charts-wrapper/android')
+include ':react-native-android-wake-lock'
+project(':react-native-android-wake-lock').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-android-wake-lock/android')
+include ':react-native-fs'
+project(':react-native-fs').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fs/android')
+include ':react-native-android-wake-lock'
+project(':react-native-android-wake-lock').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-android-wake-lock/android')
+include ':@react-native-async-storage_async-storage'
+project(':@react-native-async-storage_async-storage').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-async-storage/async-storage/android')
+apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
+include ':app'
+
+
