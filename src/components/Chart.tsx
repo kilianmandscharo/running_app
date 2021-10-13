@@ -78,8 +78,8 @@ const Chart = ({
     new Array(31).fill(0).map(_ => new Animated.Value(0)),
   ).current;
 
-  // const data: any = allRunsData.runsByDate[`${year}`][`${month}`];
-  const data: any = runs[`${year}`][`${month}`];
+  const data: any = allRunsData.runsByDate[`${year}`][`${month}`];
+  // const data: any = runs[`${year}`][`${month}`];
 
   const maxValue = Math.max(...data.map((run: any) => run.distance));
   const unit = maxValue === 0 ? 0 : (height / maxValue) * 0.7;
