@@ -118,7 +118,7 @@ class Running extends React.Component<RunningProps, RunningState> {
       distanceFilter: 0,
       notificationTitle: 'Background tracking',
       notificationText: 'enabled',
-      debug: true,
+      debug: false,
       startOnBoot: false,
       stopOnTerminate: true,
       locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
