@@ -1,6 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {View, Text, StyleSheet, Animated} from 'react-native';
-import {baseProps} from 'react-native-gesture-handler/lib/typescript/handlers/gestureHandlers';
 import Svg, {G, Rect, Text as SvgText} from 'react-native-svg';
 import {formatDistance, formatTime} from '../functional/functions';
 import generateTestData from '../functional/generateTestData';

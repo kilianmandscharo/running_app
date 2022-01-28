@@ -181,7 +181,7 @@ const PopupMenu = (props: PopupMenuProps) => {
                 />
               </Mask>
             </Defs>
-            <Path d={d} fill="url(#gradient)" mask="url(#mask)" />
+            <Path d={d} fill={mainRed} mask="url(#mask)" />
           </Svg>
         </View>
         <Animated.View
