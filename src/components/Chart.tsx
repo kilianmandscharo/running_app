@@ -54,6 +54,9 @@ const width = standardWidth;
 const height = HEIGHT / 1.6;
 const dayWidth = height / 31;
 
+const months = [-1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, -2];
+const days = [-1, ...new Array(31).fill(0).map((_, idx) => idx + 1), -2];
+
 const Chart = ({
   allRunsData,
   navigation,
@@ -62,8 +65,6 @@ const Chart = ({
   navigation: any;
 }) => {
   const years = [-1, ...allRunsData.years, -2];
-  const months = [-1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, -2];
-  const days = [-1, ...new Array(31).fill(0).map((_, idx) => idx + 1), -2];
 
   const [year, setYear] = useState(allRunsData.maxYear);
   const [month, setMonth] = useState(1);
@@ -78,12 +79,16 @@ const Chart = ({
   ).current;
 
   const data: any = allRunsData.runsByDate[`${year}`][`${month}`];
+
+  // Test data
   // const data: any = runs[`${year}`][`${month}`];
 
-  const maxValue = Math.max(...data.map((run: any) => run.distance));
-  const unit = maxValue === 0 ? 0 : (height / maxValue) * 0.7;
-
   useEffect(() => {
+    const maxValue = Math.max(...data.map((run: any) => run.distance));
+    const unit = maxValue === 0 ? 0 : (height / maxValue) * 0.7;
+    const maxValueTime = Math.max(...data.map((run: any) => run.time));
+    const unitTime = maxValueTime === 0 ? 0 : (height / maxValueTime) * 0.7;
+
     for (let i = 0; i < 31; i++) {
       const d = data[i].distance;
       Animated.timing(animatedDistanceValues[i], {
@@ -93,7 +98,7 @@ const Chart = ({
       }).start();
       const t = data[i].time;
       Animated.timing(animatedTimeValues[i], {
-        toValue: t * unit,
+        toValue: t * unitTime,
         duration: 500,
         useNativeDriver: true,
       }).start();
