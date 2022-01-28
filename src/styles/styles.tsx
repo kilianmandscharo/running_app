@@ -115,10 +115,8 @@ export const styles = StyleSheet.create({
     elevation: 10,
   },
   runningStartButtonDisabled: {
-    padding: WIDTH / 80,
-    backgroundColor: mediumBlack,
-    borderColor: mainBlue,
-    borderWidth: WIDTH / 100,
+    padding: WIDTH / 50,
+    backgroundColor: mainBlue,
     borderRadius: WIDTH / 2,
     opacity: 0.5,
   },
@@ -606,7 +604,7 @@ export const styles = StyleSheet.create({
     color: mainWhite,
   },
   confirmButton: {
-    backgroundColor: mainRed,
+    backgroundColor: mainBlue,
     width: WIDTH / 2,
     marginTop: HEIGHT / 50,
     padding: WIDTH / 30,
