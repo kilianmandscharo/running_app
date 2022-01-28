@@ -4,6 +4,7 @@ import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import Svg, {Path, Rect} from 'react-native-svg';
 import {
   BackButtonProps,
+  HistoryButtonProps,
   ListItemBackButtonProps,
   RunningButtonProps,
   StandardButtonProps,
@@ -85,6 +86,20 @@ export const StandardButton = (props: StandardButtonProps) => {
       <View>
         <Text style={props.textStyle}>{props.text}</Text>
       </View>
+    </TouchableOpacity>
+  );
+};
+
+export const HistoryButton = (props: HistoryButtonProps) => {
+  return (
+    <TouchableOpacity
+      onPress={() => props.pressHandler()}
+      activeOpacity={props.opacity}
+      style={props.buttonStyle}>
+      <View>
+        <Text style={props.textStyle}>{props.text}</Text>
+      </View>
+      {props.children}
     </TouchableOpacity>
   );
 };

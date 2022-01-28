@@ -108,6 +108,15 @@ export interface HistoryMenuProps {
   setSingleRunData: any;
 }
 
+export interface HistoryButtonProps {
+  pressHandler: any;
+  text: string;
+  buttonStyle: any;
+  textStyle: any;
+  opacity: number;
+  children: any;
+}
+
 export interface LockCircleProps {
   unlockedCallback: () => void;
   lockedCallback: () => void;

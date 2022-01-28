@@ -14,6 +14,7 @@ import {
   mainBlueDark,
   mainRedDark,
   styles,
+  WIDTH,
 } from './styles/styles';
 import * as RNFS from 'react-native-fs';
 import {gpxParser} from './functional/gpxParser';
@@ -21,13 +22,14 @@ import {VisualizerSingleRun} from './components/Visualizer';
 import {extractYearMonthDay} from './functional/functions';
 import {createStackNavigator} from '@react-navigation/stack';
 import {DialogueBox, DialogueBoxWithButtons} from './components/DialogueBoxes';
-import {BackButton, StandardButton} from './components/Buttons';
+import {BackButton, HistoryButton, StandardButton} from './components/Buttons';
 import {ListItem} from './components/ListItem';
 import PopupMenu from './components/PopupMenu';
 import LoadingCircle from './components/LoadingCircle';
 import {DeleteIcon, ExportIcon, VisualizationIcon} from './components/Icons';
 import Chart from './components/Chart';
 import Gradient from './components/Gradient';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const History = (props: HistoryProps) => {
   const [singleRunData, setSingleRunData] = useState<any>([]);
@@ -292,44 +294,40 @@ const HistoryMenu = (props: HistoryMenuProps) => {
           })}
         />
       </View>
-      <PopupMenu>
-        <View style={styles.historyButtonContainer}>
-          <StandardButton
-            pressHandler={() => {
-              exportHistory();
-            }}
-            text="Export History"
-            buttonStyle={styles.historyButton}
-            textStyle={styles.historyButtonText}
-            opacity={0.5}
-          />
+      <View style={styles.historyButtonSection}>
+        <HistoryButton
+          pressHandler={() => {
+            exportHistory();
+          }}
+          text="Export All"
+          buttonStyle={styles.historyButton}
+          textStyle={styles.historyButtonText}
+          opacity={0.5}>
           <ExportIcon />
-        </View>
-        <View style={styles.historyButtonContainer}>
-          <StandardButton
-            pressHandler={() => {
-              if (visualizeHistory()) {
-                props.navigation.navigate('AllRunsChart');
-              }
-            }}
-            text="Visualize History"
-            buttonStyle={[styles.historyButton]}
-            textStyle={styles.historyButtonText}
-            opacity={0.5}
-          />
+        </HistoryButton>
+        <HistoryButton
+          pressHandler={() => {
+            if (visualizeHistory()) {
+              props.navigation.navigate('AllRunsChart');
+            }
+          }}
+          text="Visualize All"
+          buttonStyle={[styles.historyButton]}
+          textStyle={styles.historyButtonText}
+          opacity={0.5}>
           <VisualizationIcon />
-        </View>
-        <View style={styles.historyButtonContainer}>
-          <StandardButton
-            pressHandler={() => setClearing(!clearing)}
-            text="Clear History"
-            buttonStyle={[styles.historyButton]}
-            textStyle={styles.historyButtonText}
-            opacity={0.5}
-          />
+        </HistoryButton>
+      </View>
+      <View style={styles.historyLowerButtonSection}>
+        <HistoryButton
+          pressHandler={() => setClearing(!clearing)}
+          text="Clear History"
+          buttonStyle={[styles.historyButton, {width: WIDTH / 1.1}]}
+          textStyle={styles.historyButtonText}
+          opacity={0.5}>
           <DeleteIcon />
-        </View>
-      </PopupMenu>
+        </HistoryButton>
+      </View>
       {exported && (
         <DialogueBox
           text="Run has been successfully exported as a gpx file to your download folder!"
@@ -350,7 +348,7 @@ const HistoryMenu = (props: HistoryMenuProps) => {
       )}
       {clearing && (
         <DialogueBoxWithButtons
-          text="Are you sure you want to delete you running history?"
+          text="Are you sure you want to delete your running history?"
           confirmAction={() => clearStorage()}
           cancelAction={() => setClearing(false)}
         />
