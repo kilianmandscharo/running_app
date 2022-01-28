@@ -85,9 +85,9 @@ const Chart = ({
 
   useEffect(() => {
     const maxValue = Math.max(...data.map((run: any) => run.distance));
-    const unit = maxValue === 0 ? 0 : (height / maxValue) * 0.7;
+    const unit = maxValue === 0 ? 0 : (height / maxValue) * 0.67;
     const maxValueTime = Math.max(...data.map((run: any) => run.time));
-    const unitTime = maxValueTime === 0 ? 0 : (height / maxValueTime) * 0.7;
+    const unitTime = maxValueTime === 0 ? 0 : (height / maxValueTime) * 0.67;
 
     for (let i = 0; i < 31; i++) {
       const d = data[i].distance;
