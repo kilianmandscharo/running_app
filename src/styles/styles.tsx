@@ -93,6 +93,8 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: topMargin,
+    borderWidth: WIDTH / 200,
+    borderColor: mainBlue,
   },
   runningDataSectionText: {
     fontSize: WIDTH / 11,
@@ -107,10 +109,8 @@ export const styles = StyleSheet.create({
     width: standardWidth,
   },
   runningStartButton: {
-    padding: WIDTH / 80,
-    backgroundColor: mediumBlack,
-    borderColor: mainBlue,
-    borderWidth: WIDTH / 100,
+    padding: WIDTH / 50,
+    backgroundColor: mainBlue,
     borderRadius: WIDTH / 2,
     elevation: 10,
   },
@@ -137,6 +137,8 @@ export const styles = StyleSheet.create({
     borderRadius: WIDTH / 40,
     alignItems: 'center',
     paddingBottom: HEIGHT / 40,
+    borderWidth: WIDTH / 200,
+    borderColor: mainBlue,
   },
   runningWayPointSectionHeader: {
     fontSize: WIDTH / 15,
@@ -161,17 +163,13 @@ export const styles = StyleSheet.create({
     marginBottom: HEIGHT / 40,
   },
   runningControlButton: {
-    backgroundColor: mediumBlack,
-    borderColor: mainBlue,
-    borderWidth: WIDTH / 100,
+    backgroundColor: mainBlue,
     borderRadius: WIDTH / 2,
     width: WIDTH / 3.1,
     elevation: 5,
   },
   runningControlButtonDisabled: {
-    backgroundColor: mediumBlack,
-    borderColor: mainBlue,
-    borderWidth: WIDTH / 100,
+    backgroundColor: mainBlue,
     borderRadius: WIDTH / 2,
     width: WIDTH / 3.1,
     opacity: 0.3,
@@ -260,13 +258,15 @@ export const styles = StyleSheet.create({
   historyListSection: {
     width: standardWidth,
     marginTop: topMargin,
-    marginBottom: HEIGHT / 20,
+    marginBottom: HEIGHT / 30,
     backgroundColor: mediumBlack,
     borderRadius: WIDTH / 40,
     elevation: 7,
     flex: 8,
     alignItems: 'center',
     paddingBottom: HEIGHT / 50,
+    borderWidth: WIDTH / 200,
+    borderColor: mainBlue,
   },
   historyEntry: {
     height: entryHeight,
@@ -347,6 +347,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'white',
     padding: WIDTH / 60,
+    marginRight: WIDTH / 40,
   },
 
   //Popup menu
@@ -370,6 +371,8 @@ export const styles = StyleSheet.create({
     borderRadius: WIDTH / 40,
     padding: WIDTH / 50,
     marginTop: topMargin,
+    borderWidth: WIDTH / 200,
+    borderColor: mainBlue,
   },
   singleRunDateContainer: {
     flex: 1,
@@ -428,6 +431,8 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: HEIGHT / 50,
     marginBottom: HEIGHT / 50,
+    borderWidth: WIDTH / 200,
+    borderColor: mainBlue,
   },
   singleRunChart: {
     height: HEIGHT / 2.3,
