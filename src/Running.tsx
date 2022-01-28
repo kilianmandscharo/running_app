@@ -13,7 +13,12 @@ import {
   formatDistance,
   formatTime,
 } from './functional/functions';
-import {backgroundBlack, mainRedDark, styles} from './styles/styles';
+import {
+  backgroundBlack,
+  mainBlueDark,
+  mainRedDark,
+  styles,
+} from './styles/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {WakeLockInterface} from 'react-native-android-screen-on';
 import {LockCircle} from './components/LockCircle';
@@ -224,7 +229,6 @@ class Running extends React.Component<RunningProps, RunningState> {
       console.log('[INFO] App is in foreground');
     });
     BackgroundGeolocation.on('location', location => {
-      console.log('here');
       if (location) {
         if (
           this.state.currentLocation.latitude === 0 &&
@@ -247,12 +251,12 @@ class Running extends React.Component<RunningProps, RunningState> {
             this.state.currentLocation.latitude,
             newLocation.latitude,
           );
-          console.log(
-            'distance:',
-            this.state.distance,
-            '\ntime:',
-            this.state.time,
-          );
+          // console.log(
+          //   'distance:',
+          //   this.state.distance,
+          //   '\ntime:',
+          //   this.state.time,
+          // );
           if (currentDistance > 10) {
             this.setState(prev => ({
               currentLocation: newLocation,
@@ -384,7 +388,7 @@ class Running extends React.Component<RunningProps, RunningState> {
   render() {
     return (
       <View style={styles.runningSection}>
-        <Gradient color1={mainRedDark} color2={backgroundBlack} />
+        <Gradient color1={mainBlueDark} color2={backgroundBlack} />
         {this.state.backing && (
           <DialogueBoxWithButtons
             text="Are you sure you want to end the run?"

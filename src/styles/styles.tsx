@@ -33,9 +33,11 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
+    paddingRight: WIDTH / 35,
   },
   logo: {
-    transform: [{rotate: '-80deg'}],
+    transform: [{rotate: '-79deg'}],
+    marginTop: HEIGHT / 250,
     // position: 'absolute',
     // top: HEIGHT / 11.2,
     // left: -WIDTH / 20,
@@ -107,7 +109,7 @@ export const styles = StyleSheet.create({
   runningStartButton: {
     padding: WIDTH / 80,
     backgroundColor: mediumBlack,
-    borderColor: mainRed,
+    borderColor: mainBlue,
     borderWidth: WIDTH / 100,
     borderRadius: WIDTH / 2,
     elevation: 10,
@@ -115,7 +117,7 @@ export const styles = StyleSheet.create({
   runningStartButtonDisabled: {
     padding: WIDTH / 80,
     backgroundColor: mediumBlack,
-    borderColor: mainRed,
+    borderColor: mainBlue,
     borderWidth: WIDTH / 100,
     borderRadius: WIDTH / 2,
     opacity: 0.5,
@@ -125,6 +127,7 @@ export const styles = StyleSheet.create({
     fontFamily: 'Quicksand-Medium',
     textAlign: 'center',
     color: mainWhite,
+    paddingBottom: HEIGHT / 200,
   },
   runningWayPointSection: {
     width: WIDTH / 1.1,
@@ -159,7 +162,7 @@ export const styles = StyleSheet.create({
   },
   runningControlButton: {
     backgroundColor: mediumBlack,
-    borderColor: mainRed,
+    borderColor: mainBlue,
     borderWidth: WIDTH / 100,
     borderRadius: WIDTH / 2,
     width: WIDTH / 3.1,
@@ -167,7 +170,7 @@ export const styles = StyleSheet.create({
   },
   runningControlButtonDisabled: {
     backgroundColor: mediumBlack,
-    borderColor: mainRed,
+    borderColor: mainBlue,
     borderWidth: WIDTH / 100,
     borderRadius: WIDTH / 2,
     width: WIDTH / 3.1,

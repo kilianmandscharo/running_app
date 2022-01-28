@@ -39,7 +39,7 @@ export const LockCircle = (props: LockCircleProps) => {
   const animatedFadeValue = useRef(new Animated.Value(1)).current;
   const colorValue = animatedFadeValue.interpolate({
     inputRange: [0, 1],
-    outputRange: ['rgb(193, 131, 159)', 'rgb(21, 73, 96)'],
+    outputRange: ['rgb(36, 123, 160)', 'rgb(21, 73, 96)'],
   });
 
   const fillAnimation = () => {
@@ -56,7 +56,6 @@ export const LockCircle = (props: LockCircleProps) => {
       return;
     }
     fillAnimation().start(({finished}) => {
-      console.log(finished);
       if (finished) {
         setFinished(true);
         props.unlockedCallback();

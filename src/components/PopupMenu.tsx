@@ -166,8 +166,8 @@ const PopupMenu = (props: PopupMenuProps) => {
           <Svg width={WIDTH} height={HEIGHT}>
             <Defs>
               <LinearGradient id="gradient" x1="0" y1="1" x2="0" y2="0">
-                <Stop offset="0" stopColor={mainRedDark} stopOpacity="1" />
-                <Stop offset="1" stopColor="#467183" stopOpacity="1" />
+                <Stop offset="0.5" stopColor={mainBlue} stopOpacity="1" />
+                <Stop offset="1" stopColor={mainBlueDark} stopOpacity="1" />
               </LinearGradient>
               <Mask id="mask">
                 <AnimatedRect
@@ -181,7 +181,7 @@ const PopupMenu = (props: PopupMenuProps) => {
                 />
               </Mask>
             </Defs>
-            <Path d={d} fill={mainRed} mask="url(#mask)" />
+            <Path d={d} fill="url(#gradient)" mask="url(#mask)" />
           </Svg>
         </View>
         <Animated.View

@@ -9,7 +9,12 @@ import {
   SingleRunData,
 } from './functional/interfaces';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {backgroundBlack, mainRedDark, styles} from './styles/styles';
+import {
+  backgroundBlack,
+  mainBlueDark,
+  mainRedDark,
+  styles,
+} from './styles/styles';
 import * as RNFS from 'react-native-fs';
 import {gpxParser} from './functional/gpxParser';
 import {VisualizerSingleRun} from './components/Visualizer';
@@ -268,7 +273,7 @@ const HistoryMenu = (props: HistoryMenuProps) => {
 
   return (
     <View style={styles.historySection}>
-      <Gradient color1={mainRedDark} color2={backgroundBlack} />
+      <Gradient color1={mainBlueDark} color2={backgroundBlack} />
       <View style={styles.historyListSection}>
         {runs.length === 0 && !loading && (
           <Text style={styles.historyEmptyWarning}>No runs yet</Text>
