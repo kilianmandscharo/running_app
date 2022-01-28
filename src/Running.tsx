@@ -389,6 +389,9 @@ class Running extends React.Component<RunningProps, RunningState> {
     return (
       <View style={styles.runningSection}>
         <Gradient color1={mainBlueDark} color2={backgroundBlack} />
+        <View style={styles.backSection}>
+          <BackButton pressHandler={this.handleArrowClick} />
+        </View>
         {this.state.backing && (
           <DialogueBoxWithButtons
             text="Are you sure you want to end the run?"
@@ -431,9 +434,6 @@ class Running extends React.Component<RunningProps, RunningState> {
             textStyle={styles.runningControlButtonText}
             disabledStyle={styles.runningControlButtonDisabled}
           />
-        </View>
-        <View style={styles.backSection}>
-          <BackButton pressHandler={this.handleArrowClick} />
         </View>
       </View>
     );

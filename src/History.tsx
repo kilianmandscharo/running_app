@@ -274,6 +274,9 @@ const HistoryMenu = (props: HistoryMenuProps) => {
   return (
     <View style={styles.historySection}>
       <Gradient color1={mainBlueDark} color2={backgroundBlack} />
+      <View style={styles.backSection}>
+        <BackButton pressHandler={goBack} />
+      </View>
       <View style={styles.historyListSection}>
         {runs.length === 0 && !loading && (
           <Text style={styles.historyEmptyWarning}>No runs yet</Text>
@@ -327,9 +330,6 @@ const HistoryMenu = (props: HistoryMenuProps) => {
           <DeleteIcon />
         </View>
       </PopupMenu>
-      <View style={styles.backSection}>
-        <BackButton pressHandler={goBack} />
-      </View>
       {exported && (
         <DialogueBox
           text="Run has been successfully exported as a gpx file to your download folder!"

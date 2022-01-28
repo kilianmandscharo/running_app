@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, processColor} from 'react-native';
-import {BarChart, LineChart} from 'react-native-charts-wrapper';
+import {LineChart} from 'react-native-charts-wrapper';
 import {
   checkIfDayinObject,
   formatAltitude,
@@ -8,13 +8,8 @@ import {
   formatSpeed,
   formatTime,
   parseDate,
-  parseNum,
 } from '../functional/functions';
-import {
-  AllRunsVisualizer,
-  RunMeasurement,
-  SingleRunVisualizer,
-} from '../functional/interfaces';
+import {RunMeasurement, SingleRunVisualizer} from '../functional/interfaces';
 import {
   backgroundBlack,
   HEIGHT,
@@ -24,14 +19,13 @@ import {
   styles,
   WIDTH,
 } from '../styles/styles';
-import {daysInAMonth, getDaysInAMonth} from '../functional/daysInAMonth';
+import {daysInAMonth} from '../functional/daysInAMonth';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
 import {BackButton, StandardButton} from './Buttons';
-import Chart from './Chart';
 import Gradient from './Gradient';
 
 export const VisualizerSingleRun = (props: SingleRunVisualizer) => {
@@ -81,6 +75,9 @@ export const VisualizerSingleRun = (props: SingleRunVisualizer) => {
   return (
     <View style={styles.singleRunVisualizingSection}>
       <Gradient color1={mainBlueDark} color2={backgroundBlack} />
+      <View style={styles.backSection}>
+        <BackButton pressHandler={goBack} />
+      </View>
       <View style={styles.singleRunDisplaySection}>
         <View style={styles.singleRunDateContainer}>
           <Text style={styles.singleRunDateText}>
@@ -187,9 +184,6 @@ export const VisualizerSingleRun = (props: SingleRunVisualizer) => {
           chartDescription={{text: ''}}
           legend={{enabled: false}}
         />
-      </View>
-      <View style={styles.backSection}>
-        <BackButton pressHandler={goBack} />
       </View>
     </View>
   );

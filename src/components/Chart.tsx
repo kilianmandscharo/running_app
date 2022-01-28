@@ -108,6 +108,9 @@ const Chart = ({
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Gradient color1={mainBlueDark} color2={backgroundBlack} />
+      <View style={globalStyles.backSection}>
+        <BackButton pressHandler={() => navigation.goBack()} />
+      </View>
       <View
         style={{
           flex: 1.5,
@@ -166,9 +169,6 @@ const Chart = ({
         <ScrollList data={years} handler={setYear} />
         <ScrollList data={months} handler={setMonth} />
         <ScrollList data={days} handler={setDay} />
-      </View>
-      <View style={globalStyles.backSection}>
-        <BackButton pressHandler={() => navigation.goBack()} />
       </View>
     </View>
   );
