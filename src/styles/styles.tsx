@@ -93,8 +93,8 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: topMargin,
-    borderWidth: WIDTH / 200,
-    borderColor: mainBlue,
+    // borderWidth: WIDTH / 200,
+    // borderColor: mainBlue,
   },
   runningDataSectionText: {
     fontSize: WIDTH / 11,
@@ -135,8 +135,8 @@ export const styles = StyleSheet.create({
     borderRadius: WIDTH / 40,
     alignItems: 'center',
     paddingBottom: HEIGHT / 40,
-    borderWidth: WIDTH / 200,
-    borderColor: mainBlue,
+    // borderWidth: WIDTH / 200,
+    // borderColor: mainBlue,
   },
   runningWayPointSectionHeader: {
     fontSize: WIDTH / 15,
