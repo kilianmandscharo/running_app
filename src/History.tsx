@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList, View, Text, Animated} from 'react-native';
 import {
   AllRunsData,
@@ -9,13 +9,7 @@ import {
   SingleRunData,
 } from './functional/interfaces';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-  backgroundBlack,
-  mainBlueDark,
-  mainRedDark,
-  styles,
-  WIDTH,
-} from './styles/styles';
+import {backgroundBlack, mainBlueDark, styles, WIDTH} from './styles/styles';
 import * as RNFS from 'react-native-fs';
 import {gpxParser} from './functional/gpxParser';
 import {VisualizerSingleRun} from './components/Visualizer';
@@ -24,12 +18,10 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {DialogueBox, DialogueBoxWithButtons} from './components/DialogueBoxes';
 import {BackButton, HistoryButton, StandardButton} from './components/Buttons';
 import {ListItem} from './components/ListItem';
-import PopupMenu from './components/PopupMenu';
 import LoadingCircle from './components/LoadingCircle';
 import {DeleteIcon, ExportIcon, VisualizationIcon} from './components/Icons';
 import Chart from './components/Chart';
 import Gradient from './components/Gradient';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const History = (props: HistoryProps) => {
   const [singleRunData, setSingleRunData] = useState<any>([]);
@@ -82,8 +74,6 @@ const HistoryMenu = (props: HistoryMenuProps) => {
   const [exportedFail, setExportedFail] = useState(false);
   const [allRunsExported, setAllRunsExported] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  const y = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     const getAllRuns = async () => {
@@ -263,7 +253,6 @@ const HistoryMenu = (props: HistoryMenuProps) => {
         date={item.date}
         time={item.time}
         distance={item.distance}
-        y={y}
         index={index}
         exportRun={exportRun}
         visualizeHistory={visualizeHistory}
@@ -289,9 +278,6 @@ const HistoryMenu = (props: HistoryMenuProps) => {
           data={runs}
           renderItem={renderItem}
           keyExtractor={(item: any) => item.date}
-          onScroll={Animated.event([{nativeEvent: {contentOffset: {y: y}}}], {
-            useNativeDriver: true,
-          })}
         />
       </View>
       <View style={styles.historyButtonSection}>

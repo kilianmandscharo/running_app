@@ -67,7 +67,6 @@ export interface ListItemProps {
   date: string;
   time: number;
   distance: number;
-  y: any;
   index: number;
   exportRun: (id: string) => void;
   visualizeHistory: (id?: string | null) => boolean | undefined;
