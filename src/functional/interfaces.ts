@@ -11,6 +11,7 @@ export interface RunningProps {
 }
 
 export interface RunningState {
+  locationAccessGranted: boolean;
   time: number;
   startTime: Date;
   distance: number;

@@ -7,18 +7,13 @@ import {
   LocationLatLong,
   WayPoint,
 } from './functional/interfaces';
-import RNLocation from 'react-native-location';
+// import RNLocation from 'react-native-location';
 import {
   calculateDistance,
   formatDistance,
   formatTime,
 } from './functional/functions';
-import {
-  backgroundBlack,
-  mainBlueDark,
-  mainRedDark,
-  styles,
-} from './styles/styles';
+import {backgroundBlack, mainBlueDark, styles} from './styles/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {WakeLockInterface} from 'react-native-android-screen-on';
 import {LockCircle} from './components/LockCircle';
@@ -28,22 +23,39 @@ import VIForegroundService from '@voximplant/react-native-foreground-service';
 import Timer from 'react-native-background-timer-android';
 import BackgroundGeolocation from '@darron1217/react-native-background-geolocation';
 import Gradient from './components/Gradient';
+import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
+
+// RNLocation.configure({
+//   distanceFilter: 0,
+//   desiredAccuracy: {
+//     ios: 'best',
+//     android: 'highAccuracy',
+//   },
+//   interval: 3000,
+//   maxWaitTime: 3000,
+// });
+
+BackgroundGeolocation.configure({
+  desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
+  stationaryRadius: 50,
+  distanceFilter: 0,
+  notificationTitle: 'Background tracking',
+  notificationText: 'enabled',
+  debug: false,
+  startOnBoot: false,
+  stopOnTerminate: true,
+  locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
+  interval: 2000,
+  fastestInterval: 5000,
+  activitiesInterval: 10000,
+  stopOnStillActivity: false,
+});
 
 VIForegroundService.createNotificationChannel({
   id: 'channelId',
   name: 'Runner',
   description: 'Channel for the runner app',
   enableVibration: false,
-});
-
-RNLocation.configure({
-  distanceFilter: 0,
-  desiredAccuracy: {
-    ios: 'best',
-    android: 'highAccuracy',
-  },
-  interval: 3000,
-  maxWaitTime: 3000,
 });
 
 const startForegroundService = async () => {
@@ -65,6 +77,7 @@ class Running extends React.Component<RunningProps, RunningState> {
   constructor(props: any) {
     super(props);
     this.state = {
+      locationAccessGranted: false,
       time: 0,
       startTime: new Date(),
       distance: 0,
@@ -86,84 +99,59 @@ class Running extends React.Component<RunningProps, RunningState> {
 
   _mounted = false;
 
-  componentDidMount() {
+  async componentDidMount() {
     this._mounted = true;
-    const getLocationPermission = async () => {
-      let permission;
+    // const getLocationPermission = async () => {
+    //   let permission;
+    //   try {
+    //     permission = await RNLocation.checkPermission({
+    //       ios: 'whenInUse',
+    //       android: {
+    //         detail: 'fine',
+    //       },
+    //     });
+    //     if (!permission) {
+    //       permission = await RNLocation.requestPermission({
+    //         ios: 'whenInUse',
+    //         android: {
+    //           detail: 'fine',
+    //           rationale: {
+    //             title: 'Running app location access',
+    //             message: 'Running app needs access to your location',
+    //             buttonPositive: 'OK',
+    //             buttonNegative: 'Cancel',
+    //           },
+    //         },
+    //       });
+    //     }
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // };
+    // getLocationPermission();
+
+    const requestLocationPermission = async () => {
       try {
-        permission = await RNLocation.checkPermission({
-          ios: 'whenInUse',
-          android: {
-            detail: 'fine',
+        const granted = await request(
+          PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+          {
+            title: 'Runner app location permission',
+            message: 'Runner needs access to your location',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
           },
-        });
-        if (!permission) {
-          permission = await RNLocation.requestPermission({
-            ios: 'whenInUse',
-            android: {
-              detail: 'fine',
-              rationale: {
-                title: 'Running app location access',
-                message: 'Running app needs access to your location',
-                buttonPositive: 'OK',
-                buttonNegative: 'Cancel',
-              },
-            },
-          });
+        );
+        if (granted === RESULTS.GRANTED) {
+          this.setState({locationAccessGranted: true});
+          console.log('Granted');
+        } else {
+          console.log('Denied');
         }
       } catch (err) {
         console.log(err);
       }
     };
-    getLocationPermission();
-
-    BackgroundGeolocation.configure({
-      desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
-      stationaryRadius: 50,
-      distanceFilter: 0,
-      notificationTitle: 'Background tracking',
-      notificationText: 'enabled',
-      debug: false,
-      startOnBoot: false,
-      stopOnTerminate: true,
-      locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
-      interval: 2000,
-      fastestInterval: 5000,
-      activitiesInterval: 10000,
-      stopOnStillActivity: false,
-    });
-
-    // const requestLocationPermission = async () => {
-    //   try {
-    //     const granted = await PermissionsAndroid.request(
-    //       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-    //       {
-    //         title: 'Runner app location permission',
-    //         message: 'Runner needs access to your location',
-    //         buttonNeutral: 'Ask Me Later',
-    //         buttonNegative: 'Cancel',
-    //         buttonPositive: 'OK',
-    //       },
-    //     );
-    //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-    //       console.log('Granted');
-    //       PermissionsAndroid.check(
-    //         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-    //       )
-    //         .then(res => {
-    //           console.log('request:', res);
-    //         })
-    //         .catch(err => {
-    //           console.log(err);
-    //         });
-    //     } else {
-    //       console.log('Denied');
-    //     }
-    //   } catch (err) {
-    //     console.warn(err);
-    //   }
-    // };
-    // requestLocationPermission();
+    await requestLocationPermission();
 
     const setWakeLock = WakeLockInterface.setPartialWakeLock()
       .then(res => {
@@ -194,7 +182,6 @@ class Running extends React.Component<RunningProps, RunningState> {
       ended: false,
       startTime: date,
     });
-
     const timer = Timer.setInterval(() => {
       this.setState(prev => ({
         time: prev.time + 1,
@@ -211,16 +198,10 @@ class Running extends React.Component<RunningProps, RunningState> {
       }
     }, 1000);
     this.setState({timer: timer});
+    this.locationHandler();
+  };
 
-    // RNLocation.getLatestLocation({timeout: 20000})
-    //   .then(latestLocation => {
-    //     if (latestLocation && this._mounted) {
-    //       this.setState({currentLocation: latestLocation});
-    //       this.locationHandler();
-    //     }
-    //   })
-    //   .catch(err => console.log(err));
-
+  locationHandler = () => {
     BackgroundGeolocation.start();
     BackgroundGeolocation.on('start', () => {
       console.log('[INFO] BackgroundGeolocation service has been started');
@@ -251,12 +232,6 @@ class Running extends React.Component<RunningProps, RunningState> {
             this.state.currentLocation.latitude,
             newLocation.latitude,
           );
-          // console.log(
-          //   'distance:',
-          //   this.state.distance,
-          //   '\ntime:',
-          //   this.state.time,
-          // );
           if (currentDistance > 10) {
             this.setState(prev => ({
               currentLocation: newLocation,
@@ -278,43 +253,31 @@ class Running extends React.Component<RunningProps, RunningState> {
     });
   };
 
-  locationHandler = () => {
-    const locationSubscription = RNLocation.subscribeToLocationUpdates(
-      locations => {
-        if (!this.state.timeRunning || !this._mounted) {
-          locationSubscription();
-          return;
+  pauseAndResume = () => {
+    if (this.state.timeRunning) {
+      this.setState({timeRunning: false});
+      Timer.clearInterval(this.state.timer);
+      BackgroundGeolocation.stop();
+    } else {
+      this.setState({timeRunning: true});
+      const timer = Timer.setInterval(() => {
+        this.setState(prev => ({
+          time: prev.time + 1,
+        }));
+        if (this.state.distance / 1000 >= this.state.currentWayPoint) {
+          this.setState(prev => ({
+            wayPoints: prev.wayPoints.concat({
+              distance: prev.currentWayPoint,
+              time: prev.time - prev.timeToLastWp,
+            }),
+            currentWayPoint: prev.currentWayPoint + 1,
+            timeToLastWp: prev.time,
+          }));
         }
-        const location = locations[0];
-        console.log(location);
-        if (location) {
-          const newLocation: LocationLatLong = {
-            latitude: location.latitude,
-            longitude: location.longitude,
-          };
-          const currentDistance = calculateDistance(
-            this.state.currentLocation.longitude,
-            newLocation.longitude,
-            this.state.currentLocation.latitude,
-            newLocation.latitude,
-          );
-          console.log(newLocation);
-          if (currentDistance > 10) {
-            this.setState(prev => ({
-              currentLocation: newLocation,
-              distance: prev.distance + currentDistance,
-              runningPath: prev.runningPath.concat(newLocation),
-              runMeasurements: prev.runMeasurements.concat({
-                distance: prev.distance + currentDistance,
-                time: prev.time,
-                altitude: location.altitude,
-                speed: location.speed * 3.6,
-              }),
-            }));
-          }
-        }
-      },
-    );
+      }, 1000);
+      this.setState({timer: timer});
+      this.locationHandler();
+    }
   };
 
   endRun = async () => {
@@ -344,20 +307,6 @@ class Running extends React.Component<RunningProps, RunningState> {
       return true;
     } catch (err) {
       console.log(err);
-    }
-  };
-
-  pauseAndResume = () => {
-    if (this.state.timeRunning) {
-      this.setState({timeRunning: false});
-      Timer.clearInterval(this.state.timer);
-    } else {
-      this.setState({timeRunning: true});
-      const timer = Timer.setInterval(() => {
-        this.setState(prev => ({time: prev.time + 1}));
-      }, 1000);
-      this.setState({timer: timer});
-      this.locationHandler();
     }
   };
 
@@ -404,7 +353,7 @@ class Running extends React.Component<RunningProps, RunningState> {
           <RunningSectionButton
             pressHandler={() => this.startRun()}
             text="Start Run"
-            disabled={this.state.started}
+            disabled={this.state.started || !this.state.locationAccessGranted}
             buttonStyle={styles.runningStartButton}
             textStyle={styles.runningStartButtonText}
             disabledStyle={styles.runningStartButtonDisabled}
