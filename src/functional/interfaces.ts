@@ -1,11 +1,11 @@
+// ============================================= //
+// Menu
 export interface MenuProps {
   navigation: any;
 }
 
-export interface HistoryProps {
-  navigation: any;
-}
-
+// ============================================= //
+// Running
 export interface RunningProps {
   navigation: any;
 }
@@ -46,6 +46,56 @@ export interface LocationLatLong {
   latitude: number;
 }
 
+export interface Run {
+  date: Date;
+  time: number;
+  distance: number;
+  path: LocationLatLong[];
+  runMeasurements: RunMeasurement[];
+}
+
+// ============================================= //
+// History
+export interface HistoryProps {
+  navigation: any;
+}
+
+export interface RunReducedInformation {
+  distance: number;
+  time: number;
+  year: string;
+  month: string;
+  day: string;
+}
+
+export interface RunFullInformation {
+  date: string;
+  time: number;
+  distance: number;
+  path: LocationLatLong[];
+  runMeasurements: RunMeasurement[];
+}
+
+export interface HistoryMenuProps {
+  navigation: any;
+  setAllRunsData: any;
+  setSingleRunData: any;
+}
+
+export interface AllRunsData {
+  maxYear: number;
+  minYear: number;
+  years: number[];
+  runsByDate: any;
+}
+
+export interface SingleRunData {
+  id: string;
+  data: RunMeasurement[];
+}
+
+// ============================================= //
+// Components 
 export interface StandardButtonProps {
   pressHandler: any;
   text: string;
@@ -69,7 +119,7 @@ export interface ListItemProps {
   distance: number;
   index: number;
   exportRun: (id: string) => void;
-  visualizeHistory: (id?: string | null) => boolean | undefined;
+  visualizeSingleRun: (id: string) => boolean;
   deleteItem: (key: string) => Promise<void>;
   navigate: () => void;
 }
@@ -83,28 +133,6 @@ export interface DialogueBoxWithButtonProps {
 export interface DialogueBoxProps {
   text: string;
   cancelAction: any;
-}
-
-export interface Run {
-  date: Date;
-  time: number;
-  distance: number;
-  path: LocationLatLong[];
-  runMeasurements: RunMeasurement[];
-}
-
-export interface Item {
-  date: string;
-  time: number;
-  distance: number;
-  path: LocationLatLong[];
-  runMeasurements: RunMeasurement[];
-}
-
-export interface HistoryMenuProps {
-  navigation: any;
-  setAllRunsData: any;
-  setSingleRunData: any;
 }
 
 export interface HistoryButtonProps {
@@ -131,26 +159,14 @@ export interface ListItemBackButtonProps {
   pressHandler: any;
 }
 
-export interface SingleRunData {
-  id: string;
-  data: RunMeasurement[];
-}
-
-interface DataPoint {
-  id: string;
-  distance: number;
-  time: number;
-  year: string;
-  month: string;
-  day: string; 
-}
-
-export interface AllRunsData {
-  maxYear: number;
-  minYear: number;
-  years: number[];
-  runsByDate: any;
-}
+// interface DataPoint {
+//   id: string;
+//   distance: number;
+//   time: number;
+//   year: string;
+//   month: string;
+//   day: string; 
+// }
 
 export interface SingleRunVisualizer {
   data: SingleRunData;
@@ -163,6 +179,6 @@ export interface AllRunsVisualizer {
 }
 
 export interface RenderItemProps {
-  item: Item;
+  item: RunFullInformation;
   index: number;
 }

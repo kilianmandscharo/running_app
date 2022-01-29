@@ -4,9 +4,10 @@ import {
   AllRunsData,
   HistoryMenuProps,
   HistoryProps,
-  Item,
   RenderItemProps,
+  RunFullInformation,
   SingleRunData,
+  RunReducedInformation,
 } from './functional/interfaces';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {backgroundBlack, mainBlueDark, styles, WIDTH} from './styles/styles';
@@ -68,12 +69,13 @@ const History = (props: HistoryProps) => {
 const AnimatedFlatlist = Animated.createAnimatedComponent(FlatList);
 
 const HistoryMenu = (props: HistoryMenuProps) => {
-  const [runs, setRuns] = useState<Item[]>([]);
+  const [runs, setRuns] = useState<RunFullInformation[]>([]);
   const [clearing, setClearing] = useState(false);
   const [exported, setExported] = useState(false);
   const [exportedFail, setExportedFail] = useState(false);
   const [allRunsExported, setAllRunsExported] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [runsPrepped, setRunsPrepped] = useState(false);
 
   useEffect(() => {
     const getAllRuns = async () => {
@@ -87,6 +89,11 @@ const HistoryMenu = (props: HistoryMenuProps) => {
     getAllRuns();
   }, []);
 
+  useEffect(() => {
+    const prepped = prepRunsForChart();
+    setRunsPrepped(prepped ? true : false);
+  }, [runs]);
+
   const loadRuns = async () => {
     let keys: string[] = [];
     try {
@@ -99,7 +106,7 @@ const HistoryMenu = (props: HistoryMenuProps) => {
   };
 
   const getRuns = async (keys: string[]) => {
-    const runs: Item[] = [];
+    const runs: RunFullInformation[] = [];
     for (const key of keys) {
       try {
         const run = await AsyncStorage.getItem(key);
@@ -200,38 +207,46 @@ const HistoryMenu = (props: HistoryMenuProps) => {
       });
   };
 
-  const visualizeHistory = (id: string | null = null) => {
-    if (runs.length === 0) {
+  const visualizeSingleRun = (id: string) => {
+    const run: RunFullInformation | undefined = getRunFromRunsById(id);
+    if (run) {
+      if (!run.runMeasurements.length) {
+        return false;
+      }
+      const data: SingleRunData = {id: id, data: run.runMeasurements};
+      props.setSingleRunData(data);
+      return true;
+    } else {
       return false;
     }
-    if (id) {
-      const run: Item | undefined = getRunFromRunsById(id);
-      if (run) {
-        if (run.runMeasurements.length === 0) {
-          return false;
-        }
-        const data: SingleRunData = {id: id, data: run.runMeasurements};
-        props.setSingleRunData(data);
-        return true;
-      }
+  };
+
+  const prepRunsForChart = () => {
+    if (!runs.length) {
+      return false;
     } else {
-      const years: number[] = [];
-      const runData = runs.map((run: Item) => {
+      //Here the runMeasurements are discarded, only the total distance and
+      //total time are handed down for each run to the chart, but first,
+      //the runs have to be prepared for ordering by year
+      const allYears: number[] = [];
+      const runData: RunReducedInformation[] = runs.map(run => {
         const [year, month, day] = extractYearMonthDay(run.date);
-        years.push(parseInt(year));
+        allYears.push(parseInt(year));
         return {
           distance: run.distance,
           time: run.time,
-          year: year,
-          month: month,
-          day: day,
+          year,
+          month,
+          day,
         };
       });
-      const runsByDate = sortRunsByDate(years, runData);
+
+      //The unsorted runs are sorted by the extracted years
+      const runsByDate = sortRunsByDate(allYears, runData);
       const data: AllRunsData = {
-        maxYear: Math.max(...years.map(year => year)),
-        minYear: Math.min(...years.map(year => year)),
-        years: [...new Set(years)],
+        maxYear: Math.max(...allYears.map(year => year)),
+        minYear: Math.min(...allYears.map(year => year)),
+        years: [...new Set(allYears)],
         runsByDate: runsByDate,
       };
       props.setAllRunsData(data);
@@ -255,7 +270,7 @@ const HistoryMenu = (props: HistoryMenuProps) => {
         distance={item.distance}
         index={index}
         exportRun={exportRun}
-        visualizeHistory={visualizeHistory}
+        visualizeSingleRun={visualizeSingleRun}
         deleteItem={deleteItem}
         navigate={navigateToSingleRunHistory}
       />
@@ -293,7 +308,7 @@ const HistoryMenu = (props: HistoryMenuProps) => {
         </HistoryButton>
         <HistoryButton
           pressHandler={() => {
-            if (visualizeHistory()) {
+            if (runsPrepped) {
               props.navigation.navigate('AllRunsChart');
             }
           }}
@@ -343,8 +358,11 @@ const HistoryMenu = (props: HistoryMenuProps) => {
   );
 };
 
-const sortRunsByDate = (years: number[], runs: any) => {
+const sortRunsByDate = (years: number[], runs: RunReducedInformation[]) => {
   const runsByDate: any = {};
+
+  //For each year make an object with 12 keys for the months,
+  //each of those holds an array of 31 objects, one for each day
   for (const year of years) {
     const yearData: any = {};
     for (let i = 1; i < 13; i++) {
@@ -354,11 +372,15 @@ const sortRunsByDate = (years: number[], runs: any) => {
     }
     runsByDate[year] = yearData;
   }
+
+  //For each of the unordered runs, go into the object that
+  //holds the ordered runs and copy the distance and time into
+  //the given run
   for (const run of runs) {
-    const temp =
+    const entry =
       runsByDate[run.year][parseInt(run.month)][parseInt(run.day) - 1];
-    temp.distance = run.distance;
-    temp.time = run.time;
+    entry.distance = run.distance;
+    entry.time = run.time;
   }
   return runsByDate;
 };

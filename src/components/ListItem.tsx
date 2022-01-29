@@ -111,7 +111,7 @@ export const ListItem = (props: ListItemProps) => {
             <StandardButton
               text="Visualize"
               pressHandler={() => {
-                if (props.visualizeHistory(props.date)) {
+                if (props.visualizeSingleRun(props.date)) {
                   props.navigate();
                 }
               }}
