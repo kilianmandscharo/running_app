@@ -11,7 +11,6 @@ export interface RunningProps {
 }
 
 export interface RunningState {
-  locationAccessGranted: boolean;
   time: number;
   startTime: Date;
   distance: number;
@@ -28,6 +27,7 @@ export interface RunningState {
   currentWayPoint: number;
   timeToLastWp: number;
   ended: boolean;
+  locationDialogEnabled: boolean;
 }
 
 export interface RunMeasurement {
@@ -127,6 +127,8 @@ export interface ListItemProps {
 
 export interface DialogueBoxWithButtonProps {
   text: string;
+  confirmText: string;
+  cancelText: string;
   confirmAction: any;
   cancelAction: any;
 }

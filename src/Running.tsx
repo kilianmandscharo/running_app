@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, ScrollView, PermissionsAndroid} from 'react-native';
+import {Text, View, ScrollView, PermissionsAndroid, Alert} from 'react-native';
 import {
   RunningProps,
   Run,
@@ -7,7 +7,6 @@ import {
   LocationLatLong,
   WayPoint,
 } from './functional/interfaces';
-// import RNLocation from 'react-native-location';
 import {
   calculateDistance,
   formatDistance,
@@ -24,16 +23,7 @@ import Timer from 'react-native-background-timer-android';
 import BackgroundGeolocation from '@darron1217/react-native-background-geolocation';
 import Gradient from './components/Gradient';
 import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
-
-// RNLocation.configure({
-//   distanceFilter: 0,
-//   desiredAccuracy: {
-//     ios: 'best',
-//     android: 'highAccuracy',
-//   },
-//   interval: 3000,
-//   maxWaitTime: 3000,
-// });
+import systemSetting from 'react-native-system-setting';
 
 BackgroundGeolocation.configure({
   desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
@@ -77,7 +67,6 @@ class Running extends React.Component<RunningProps, RunningState> {
   constructor(props: any) {
     super(props);
     this.state = {
-      locationAccessGranted: false,
       time: 0,
       startTime: new Date(),
       distance: 0,
@@ -94,6 +83,7 @@ class Running extends React.Component<RunningProps, RunningState> {
       currentWayPoint: 1,
       timeToLastWp: 0,
       ended: false,
+      locationDialogEnabled: false,
     };
   }
 
@@ -101,34 +91,6 @@ class Running extends React.Component<RunningProps, RunningState> {
 
   async componentDidMount() {
     this._mounted = true;
-    // const getLocationPermission = async () => {
-    //   let permission;
-    //   try {
-    //     permission = await RNLocation.checkPermission({
-    //       ios: 'whenInUse',
-    //       android: {
-    //         detail: 'fine',
-    //       },
-    //     });
-    //     if (!permission) {
-    //       permission = await RNLocation.requestPermission({
-    //         ios: 'whenInUse',
-    //         android: {
-    //           detail: 'fine',
-    //           rationale: {
-    //             title: 'Running app location access',
-    //             message: 'Running app needs access to your location',
-    //             buttonPositive: 'OK',
-    //             buttonNegative: 'Cancel',
-    //           },
-    //         },
-    //       });
-    //     }
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // };
-    // getLocationPermission();
 
     const requestLocationPermission = async () => {
       try {
@@ -142,7 +104,6 @@ class Running extends React.Component<RunningProps, RunningState> {
           },
         );
         if (granted === RESULTS.GRANTED) {
-          this.setState({locationAccessGranted: true});
           console.log('Granted');
         } else {
           console.log('Denied');
@@ -174,31 +135,37 @@ class Running extends React.Component<RunningProps, RunningState> {
   }
 
   startRun = () => {
-    startForegroundService();
-    const date = new Date();
-    this.setState({
-      started: true,
-      timeRunning: true,
-      ended: false,
-      startTime: date,
-    });
-    const timer = Timer.setInterval(() => {
-      this.setState(prev => ({
-        time: prev.time + 1,
-      }));
-      if (this.state.distance / 1000 >= this.state.currentWayPoint) {
-        this.setState(prev => ({
-          wayPoints: prev.wayPoints.concat({
-            distance: prev.currentWayPoint,
-            time: prev.time - prev.timeToLastWp,
-          }),
-          currentWayPoint: prev.currentWayPoint + 1,
-          timeToLastWp: prev.time,
-        }));
+    systemSetting.isLocationEnabled().then(enabled => {
+      if (!enabled) {
+        this.setState({locationDialogEnabled: true});
+      } else {
+        startForegroundService();
+        const date = new Date();
+        this.setState({
+          started: true,
+          timeRunning: true,
+          ended: false,
+          startTime: date,
+        });
+        const timer = Timer.setInterval(() => {
+          this.setState(prev => ({
+            time: prev.time + 1,
+          }));
+          if (this.state.distance / 1000 >= this.state.currentWayPoint) {
+            this.setState(prev => ({
+              wayPoints: prev.wayPoints.concat({
+                distance: prev.currentWayPoint,
+                time: prev.time - prev.timeToLastWp,
+              }),
+              currentWayPoint: prev.currentWayPoint + 1,
+              timeToLastWp: prev.time,
+            }));
+          }
+        }, 1000);
+        this.setState({timer: timer});
+        this.locationHandler();
       }
-    }, 1000);
-    this.setState({timer: timer});
-    this.locationHandler();
+    });
   };
 
   locationHandler = () => {
@@ -344,6 +311,8 @@ class Running extends React.Component<RunningProps, RunningState> {
         {this.state.backing && (
           <DialogueBoxWithButtons
             text="Are you sure you want to end the run?"
+            confirmText="Confirm"
+            cancelText="Cancel"
             confirmAction={this.goBack}
             cancelAction={() => this.setState({backing: false})}
           />
@@ -353,7 +322,7 @@ class Running extends React.Component<RunningProps, RunningState> {
           <RunningSectionButton
             pressHandler={() => this.startRun()}
             text="Start Run"
-            disabled={this.state.started || !this.state.locationAccessGranted}
+            disabled={this.state.started}
             buttonStyle={styles.runningStartButton}
             textStyle={styles.runningStartButtonText}
             disabledStyle={styles.runningStartButtonDisabled}
@@ -384,6 +353,18 @@ class Running extends React.Component<RunningProps, RunningState> {
             disabledStyle={styles.runningControlButtonDisabled}
           />
         </View>
+        {this.state.locationDialogEnabled && (
+          <DialogueBoxWithButtons
+            text="Your location has to be enabled to start the run"
+            confirmText="Enable Location"
+            cancelText="Cancel"
+            confirmAction={() => {
+              systemSetting.switchLocation(),
+                this.setState({locationDialogEnabled: false});
+            }}
+            cancelAction={() => this.setState({locationDialogEnabled: false})}
+          />
+        )}
       </View>
     );
   }
