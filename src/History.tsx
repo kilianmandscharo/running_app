@@ -350,6 +350,8 @@ const HistoryMenu = (props: HistoryMenuProps) => {
       {clearing && (
         <DialogueBoxWithButtons
           text="Are you sure you want to delete your running history?"
+          confirmText="Confirm"
+          cancelText="Cancel"
           confirmAction={() => clearStorage()}
           cancelAction={() => setClearing(false)}
         />

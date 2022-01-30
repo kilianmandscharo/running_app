@@ -16,14 +16,14 @@ export const DialogueBoxWithButtons = (props: DialogueBoxWithButtonProps) => {
             <Text style={styles.dialogueMessage}>{props.text}</Text>
             <StandardButton
               pressHandler={() => props.confirmAction()}
-              text="Confirm"
+              text={props.confirmText}
               buttonStyle={styles.confirmButton}
               textStyle={styles.decisionButtonText}
               opacity={0.8}
             />
             <StandardButton
               pressHandler={() => props.cancelAction()}
-              text="Cancel"
+              text={props.cancelText}
               buttonStyle={styles.cancelButton}
               textStyle={styles.decisionButtonText}
               opacity={0.8}
