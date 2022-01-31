@@ -373,8 +373,8 @@ export const styles = StyleSheet.create({
     borderRadius: WIDTH / 40,
     padding: WIDTH / 50,
     marginTop: topMargin,
-    borderWidth: WIDTH / 200,
-    borderColor: mainBlue,
+    // borderWidth: WIDTH / 200,
+    // borderColor: mainBlue,
   },
   singleRunGraphDateContainer: {
     flex: 1,
@@ -385,6 +385,9 @@ export const styles = StyleSheet.create({
     fontSize: WIDTH / 15,
     fontFamily: 'Quicksand-Bold',
     color: mainWhite,
+    paddingBottom: HEIGHT / 80,
+    borderBottomWidth: WIDTH / 200,
+    borderBottomColor: mainBlue,
   },
   singleRunGraphStatsContainer: {
     flex: 1,

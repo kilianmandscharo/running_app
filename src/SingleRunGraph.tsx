@@ -13,8 +13,10 @@ import {
   backgroundBlack,
   HEIGHT,
   mainBlue,
+  mainBlueBright,
   mainBlueDark,
   mainRed,
+  mainRedBright,
   styles,
   WIDTH,
 } from './styles/styles';
@@ -83,10 +85,12 @@ const SingleRunGraph = (props: SingleRunGraphProps) => {
           </Text>
         </View>
         <View style={styles.singleRunGraphStatsContainer}>
-          <Text style={[styles.singleRunGraphStatsText, {color: mainBlue}]}>
+          <Text
+            style={[styles.singleRunGraphStatsText, {color: mainBlueBright}]}>
             {displayText}
           </Text>
-          <Text style={[styles.singleRunGraphStatsText, {color: mainRed}]}>
+          <Text
+            style={[styles.singleRunGraphStatsText, {color: mainRedBright}]}>
             Time: {formatTime(xValue)}
           </Text>
         </View>
