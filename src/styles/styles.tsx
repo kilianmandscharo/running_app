@@ -17,7 +17,7 @@ export const mainRedBright = '#ce9db3';
 export const mainGreen = '#83c1a5';
 export const mainBlue = '#247BA0';
 export const mainBlueDark = '#154960';
-export const mainBlueBright = '#2b94c0';
+export const mainBlueBright = '#2fa0d0';
 export const mainWhite = 'rgba(255, 255, 255, 0.87)';
 
 export const standardWidth = WIDTH / 1.1;
