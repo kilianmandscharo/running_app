@@ -96,6 +96,20 @@ export interface SingleRunData {
 }
 
 // ============================================= //
+// SingleRunGraph 
+export interface SingleRunGraphProps {
+  data: SingleRunData;
+  navigation: any;
+}
+
+// ============================================= //
+// AllRunsChart 
+export interface AllRunsChartProps {
+  allRunsData: AllRunsData;
+  navigation: any;
+}
+
+// ============================================= //
 // Components 
 export interface StandardButtonProps {
   pressHandler: any;
@@ -114,6 +128,10 @@ export interface RunningButtonProps {
   disabledStyle: any;
 }
 
+export interface BackButtonProps {
+  pressHandler: any;
+}
+
 export interface ListItemProps {
   date: string;
   time: number;
@@ -124,6 +142,20 @@ export interface ListItemProps {
   setIdOfCurrentRun: React.Dispatch<React.SetStateAction<string>>;
   visualizeSingleRun: (id: string) => boolean;
   navigate: () => void;
+}
+
+export interface ListItemBackButtonProps {
+  pressHandler: any;
+}
+
+export interface RenderItemProps {
+  item: RunFullInformation;
+  index: number;
+}
+
+export interface DialogueBoxProps {
+  text: string;
+  cancelAction: any;
 }
 
 export interface DialogBoxConfirmCancelProps {
@@ -144,11 +176,6 @@ export interface DialogBoxThreeButtonsProps {
   cancelAction: any;
 }
 
-export interface DialogueBoxProps {
-  text: string;
-  cancelAction: any;
-}
-
 export interface HistoryButtonProps {
   pressHandler: any;
   text: string;
@@ -163,36 +190,4 @@ export interface LockCircleProps {
   lockedCallback: () => void;
   started: boolean;
   ended: boolean;
-}
-
-export interface BackButtonProps {
-  pressHandler: any;
-}
-
-export interface ListItemBackButtonProps {
-  pressHandler: any;
-}
-
-// interface DataPoint {
-//   id: string;
-//   distance: number;
-//   time: number;
-//   year: string;
-//   month: string;
-//   day: string; 
-// }
-
-export interface SingleRunGraphProps {
-  data: SingleRunData;
-  navigation: any;
-}
-
-export interface AllRunsChartProps {
-  allRunsData: AllRunsData;
-  navigation: any;
-}
-
-export interface RenderItemProps {
-  item: RunFullInformation;
-  index: number;
 }
