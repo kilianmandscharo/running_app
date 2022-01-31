@@ -171,13 +171,13 @@ export interface ListItemBackButtonProps {
 //   day: string; 
 // }
 
-export interface SingleRunVisualizer {
+export interface SingleRunGraphProps {
   data: SingleRunData;
   navigation: any;
 }
 
-export interface AllRunsVisualizer {
-  data: AllRunsData;
+export interface AllRunsChartProps {
+  allRunsData: AllRunsData;
   navigation: any;
 }
 

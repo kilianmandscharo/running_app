@@ -13,7 +13,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {backgroundBlack, mainBlueDark, styles, WIDTH} from './styles/styles';
 import * as RNFS from 'react-native-fs';
 import {gpxParser} from './functional/gpxParser';
-import {SingleRunGraph} from './GraphSingleRun';
 import {extractYearMonthDay} from './functional/functions';
 import {createStackNavigator} from '@react-navigation/stack';
 import {DialogueBox, DialogueBoxWithButtons} from './components/DialogueBoxes';
@@ -21,8 +20,9 @@ import {BackButton, HistoryButton, StandardButton} from './components/Buttons';
 import {ListItem} from './components/ListItem';
 import LoadingCircle from './components/LoadingCircle';
 import {DeleteIcon, ExportIcon, VisualizationIcon} from './components/Icons';
-import Chart from './components/Chart';
+import Chart from './AllRunsChart';
 import Gradient from './components/Gradient';
+import SingleRunGraph from './SingleRunGraph';
 
 const History = (props: HistoryProps) => {
   const [singleRunData, setSingleRunData] = useState<any>([]);
@@ -278,7 +278,7 @@ const HistoryMenu = (props: HistoryMenuProps) => {
   };
 
   return (
-    <View style={styles.historySection}>
+    <View style={styles.history}>
       <Gradient color1={mainBlueDark} color2={backgroundBlack} />
       <View style={styles.backSection}>
         <BackButton pressHandler={goBack} />

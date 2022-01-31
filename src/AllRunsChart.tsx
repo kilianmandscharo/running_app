@@ -1,52 +1,24 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {View, Text, StyleSheet, Animated} from 'react-native';
+import {View, Text, Animated} from 'react-native';
 import Svg, {G, Rect, Text as SvgText} from 'react-native-svg';
-import {formatDistance, formatTime} from '../functional/functions';
-import generateTestData from '../functional/generateTestData';
-import {AllRunsData} from '../functional/interfaces';
+import {formatDistance, formatTime} from './functional/functions';
+import generateTestData from './functional/generateTestData';
+import {AllRunsChartProps} from './functional/interfaces';
 import {
   backgroundBlack,
   HEIGHT,
   mainBlue,
   mainBlueDark,
   mainRed,
-  mediumBlack,
   standardWidth,
-  WIDTH,
-} from '../styles/styles';
-import {styles as globalStyles} from '../styles/styles';
-import {BackButton} from './Buttons';
-import Gradient from './Gradient';
+} from './styles/styles';
+import {styles} from './styles/styles';
+import {BackButton} from './components/Buttons';
+import Gradient from './components/Gradient';
 
 const itemHeight = HEIGHT / 25;
 
 const AnimatedRect = Animated.createAnimatedComponent(Rect);
-
-const styles = StyleSheet.create({
-  dataText: {
-    textAlign: 'center',
-    fontSize: WIDTH / 25,
-    fontFamily: 'Quicksand-Medium',
-    color: 'white',
-    borderWidth: WIDTH / 150,
-    borderRadius: WIDTH / 12.5,
-    padding: WIDTH / 40,
-    width: standardWidth / 2.1,
-    textAlignVertical: 'center',
-    backgroundColor: mediumBlack,
-  },
-  list: {
-    height: itemHeight * 3,
-    width: standardWidth / 3.5,
-  },
-  item: {
-    height: itemHeight,
-    textAlign: 'center',
-    fontSize: WIDTH / 25,
-    fontFamily: 'Quicksand-Medium',
-    color: 'white',
-  },
-});
 
 const runs = generateTestData(2019, 2021);
 
@@ -57,13 +29,7 @@ const dayWidth = height / 31;
 const months = [-1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, -2];
 const days = [-1, ...new Array(31).fill(0).map((_, idx) => idx + 1), -2];
 
-const Chart = ({
-  allRunsData,
-  navigation,
-}: {
-  allRunsData: AllRunsData;
-  navigation: any;
-}) => {
+const AllRunsChart = ({allRunsData, navigation}: AllRunsChartProps) => {
   const years = [-1, ...allRunsData.years, -2];
 
   const [year, setYear] = useState(allRunsData.maxYear);
@@ -108,7 +74,7 @@ const Chart = ({
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Gradient color1={mainBlueDark} color2={backgroundBlack} />
-      <View style={globalStyles.backSection}>
+      <View style={styles.backSection}>
         <BackButton pressHandler={() => navigation.goBack()} />
       </View>
       <View
@@ -119,10 +85,10 @@ const Chart = ({
           alignItems: 'center',
           width: standardWidth,
         }}>
-        <Text style={[styles.dataText, {borderColor: mainBlue}]}>
+        <Text style={[styles.AllRunsChartDataText, {borderColor: mainBlue}]}>
           Distance: {formatDistance(data[`${day - 1}`].distance)} km
         </Text>
-        <Text style={[styles.dataText, {borderColor: mainRed}]}>
+        <Text style={[styles.AllRunsChartDataText, {borderColor: mainRed}]}>
           Time: {formatTime(data[`${day - 1}`].time)}
         </Text>
       </View>
@@ -184,7 +150,7 @@ const ScrollList = ({
   const scrollY = useRef(new Animated.Value(0)).current;
 
   return (
-    <View style={styles.list}>
+    <View style={[styles.AllRunsChartList, {height: itemHeight * 3}]}>
       <Animated.FlatList
         data={data}
         keyExtractor={item => item.toString()}
@@ -214,7 +180,10 @@ const ScrollList = ({
           return (
             <View>
               <Animated.Text
-                style={[styles.item, {opacity, transform: [{scale}]}]}>
+                style={[
+                  styles.AllRunsChartItem,
+                  {opacity, transform: [{scale}], height: itemHeight},
+                ]}>
                 {parseNumber(item)}
               </Animated.Text>
             </View>
@@ -241,4 +210,4 @@ const parseNumber = (number: number) => {
   }
 };
 
-export default Chart;
+export default AllRunsChart;

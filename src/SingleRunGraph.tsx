@@ -8,12 +8,13 @@ import {
   formatTime,
   parseDate,
 } from './functional/functions';
-import {RunMeasurement, SingleRunVisualizer} from './functional/interfaces';
+import {RunMeasurement, SingleRunGraphProps} from './functional/interfaces';
 import {
   backgroundBlack,
   HEIGHT,
   mainBlue,
   mainBlueDark,
+  mainRed,
   styles,
   WIDTH,
 } from './styles/styles';
@@ -25,7 +26,7 @@ import Animated, {
 import {BackButton, StandardButton} from './components/Buttons';
 import Gradient from './components/Gradient';
 
-export const SingleRunGraph = (props: SingleRunVisualizer) => {
+const SingleRunGraph = (props: SingleRunGraphProps) => {
   const [dataset, setDataset] = useState<1 | 2 | 3>(1);
   const [yValue, setYValue] = useState(0);
   const [xValue, setXValue] = useState(props.data.data[0].time);
@@ -70,26 +71,28 @@ export const SingleRunGraph = (props: SingleRunVisualizer) => {
       : `Speed: ${formatSpeed(yValue)} km/h`;
 
   return (
-    <View style={styles.singleRunVisualizingSection}>
+    <View style={styles.singleRunGraph}>
       <Gradient color1={mainBlueDark} color2={backgroundBlack} />
       <View style={styles.backSection}>
         <BackButton pressHandler={goBack} />
       </View>
-      <View style={styles.singleRunDisplaySection}>
-        <View style={styles.singleRunDateContainer}>
-          <Text style={styles.singleRunDateText}>
+      <View style={styles.SingleRunGraphInfoSection}>
+        <View style={styles.singleRunGraphDateContainer}>
+          <Text style={styles.singleRunGraphDateText}>
             {parseDate(props.data.id)}
           </Text>
         </View>
-        <View style={styles.singleRunDisplayContainer}>
-          <Text style={styles.singleRunDisplayText}>{displayText}</Text>
-          <Text style={styles.singleRunDisplayText}>
+        <View style={styles.singleRunGraphStatsContainer}>
+          <Text style={[styles.singleRunGraphStatsText, {color: mainBlue}]}>
+            {displayText}
+          </Text>
+          <Text style={[styles.singleRunGraphStatsText, {color: mainRed}]}>
             Time: {formatTime(xValue)}
           </Text>
         </View>
       </View>
-      <View style={styles.singleRunVisualizingButtonSection}>
-        <Animated.View style={[styles.singleRunVisualizingSelection, style]} />
+      <View style={styles.singleRunGraphButtonSection}>
+        <Animated.View style={[styles.singleRunGraphSelector, style]} />
         <StandardButton
           pressHandler={() => {
             selected.value = withTiming(0);
@@ -97,8 +100,8 @@ export const SingleRunGraph = (props: SingleRunVisualizer) => {
             setDataset(1);
           }}
           text="Distance"
-          buttonStyle={styles.singleRunVisualizingButton}
-          textStyle={styles.singleRunVisualizingButtonText}
+          buttonStyle={styles.singleRunGraphButton}
+          textStyle={styles.singleRunGraphButtonText}
           opacity={0.8}
         />
         <StandardButton
@@ -108,8 +111,8 @@ export const SingleRunGraph = (props: SingleRunVisualizer) => {
             setDataset(2);
           }}
           text="Altitude"
-          buttonStyle={styles.singleRunVisualizingButton}
-          textStyle={styles.singleRunVisualizingButtonText}
+          buttonStyle={styles.singleRunGraphButton}
+          textStyle={styles.singleRunGraphButtonText}
           opacity={0.8}
         />
         <StandardButton
@@ -119,14 +122,14 @@ export const SingleRunGraph = (props: SingleRunVisualizer) => {
             setDataset(3);
           }}
           text="Speed"
-          buttonStyle={styles.singleRunVisualizingButton}
-          textStyle={styles.singleRunVisualizingButtonText}
+          buttonStyle={styles.singleRunGraphButton}
+          textStyle={styles.singleRunGraphButtonText}
           opacity={0.8}
         />
       </View>
-      <View style={styles.singleRunChartSection}>
+      <View style={styles.singleRunGraphGraphSection}>
         <LineChart
-          style={styles.singleRunChart}
+          style={styles.singleRunGraphGraph}
           data={{
             dataSets: [
               {
@@ -217,3 +220,5 @@ const getYearTotal = (runsByDate: any, year: string, mode: string) => {
   }
   return reVal;
 };
+
+export default SingleRunGraph;

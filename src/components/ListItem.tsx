@@ -3,7 +3,7 @@ import {Animated, View} from 'react-native';
 import {ListItemBackButton, StandardButton} from './Buttons';
 import {formatDistance, formatTime, parseDate} from '../functional/functions';
 import {ListItemProps} from '../functional/interfaces';
-import {styles} from '../styles/styles';
+import {mainBlueBright, mainRedBright, styles} from '../styles/styles';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 
 const AnimatedButton = Animated.createAnimatedComponent(
@@ -84,19 +84,28 @@ export const ListItem = (props: ListItemProps) => {
         opacity: deleteAnimationValue,
       }}>
       <Animated.View style={[styles.historyEntry]}>
-        <View style={{flex: 1, justifyContent: 'center'}}>
+        <View style={styles.historyEntryFrontside}>
           <Animated.Text
             style={[styles.historyEntryDate, {opacity: frontOpacity}]}>
             {parseDate(props.date)}
           </Animated.Text>
           <Animated.Text
-            style={[styles.historyEntryText, {opacity: frontOpacityData}]}>
+            style={[
+              styles.historyEntryText,
+              {opacity: frontOpacityData, color: mainRedBright},
+            ]}>
             Time: {formatTime(props.time)}
-            {'\n'} Distance: {formatDistance(props.distance)} km
+          </Animated.Text>
+          <Animated.Text
+            style={[
+              styles.historyEntryText,
+              {opacity: frontOpacityData, color: mainBlueBright},
+            ]}>
+            Distance: {formatDistance(props.distance)} km
           </Animated.Text>
         </View>
         <Animated.View
-          style={[styles.historyEntryButtonSection, {opacity: backOpacity}]}
+          style={[styles.historyEntryBackside, {opacity: backOpacity}]}
           pointerEvents={!flipped ? 'none' : 'box-none'}>
           <View style={styles.historyEntryButtonContainer}>
             <StandardButton
@@ -104,8 +113,8 @@ export const ListItem = (props: ListItemProps) => {
               pressHandler={() => {
                 props.exportRun(props.date);
               }}
-              buttonStyle={styles.historyEntryMenuButton}
-              textStyle={styles.historyEntryMenuButtonText}
+              buttonStyle={styles.historyEntryButton}
+              textStyle={styles.historyEntryButtonText}
               opacity={0.8}
             />
             <StandardButton
@@ -115,21 +124,15 @@ export const ListItem = (props: ListItemProps) => {
                   props.navigate();
                 }
               }}
-              buttonStyle={[
-                styles.historyEntryMenuButton,
-                {borderTopWidth: 0.8},
-              ]}
-              textStyle={styles.historyEntryMenuButtonText}
+              buttonStyle={[styles.historyEntryButton, {borderTopWidth: 0.8}]}
+              textStyle={styles.historyEntryButtonText}
               opacity={0.8}
             />
             <StandardButton
               text="Delete"
               pressHandler={deleteItem}
-              buttonStyle={[
-                styles.historyEntryMenuButton,
-                {borderTopWidth: 0.8},
-              ]}
-              textStyle={styles.historyEntryMenuButtonText}
+              buttonStyle={[styles.historyEntryButton, {borderTopWidth: 0.8}]}
+              textStyle={styles.historyEntryButtonText}
               opacity={0.8}
             />
           </View>

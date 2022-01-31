@@ -13,9 +13,11 @@ export const mediumBlack = '#262626';
 export const elevatedBlack = '#393939';
 export const mainRed = '#C1839F';
 export const mainRedDark = '#60414f';
+export const mainRedBright = '#ce9db3';
 export const mainGreen = '#83c1a5';
 export const mainBlue = '#247BA0';
 export const mainBlueDark = '#154960';
+export const mainBlueBright = '#2b94c0';
 export const mainWhite = 'rgba(255, 255, 255, 0.87)';
 
 export const standardWidth = WIDTH / 1.1;
@@ -242,7 +244,7 @@ export const styles = StyleSheet.create({
   },
 
   // History section
-  historySection: {
+  history: {
     flex: 1,
     alignItems: 'center',
   },
@@ -276,20 +278,24 @@ export const styles = StyleSheet.create({
     overflow: 'hidden',
     backgroundColor: elevatedBlack,
   },
+  historyEntryFrontside: {
+    flex: 1,
+    justifyContent: 'center',
+  },
   historyEntryDate: {
     fontSize: WIDTH / 17,
     fontFamily: 'Quicksand-Bold',
     textAlign: 'center',
-    color: mainRed,
+    color: mainWhite,
+    marginBottom: HEIGHT / 80,
   },
   historyEntryText: {
     fontSize: WIDTH / 20,
     fontFamily: 'Quicksand-Regular',
     textAlign: 'center',
     color: 'white',
-    margin: WIDTH / 40,
   },
-  historyEntryButtonSection: {
+  historyEntryBackside: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
@@ -304,14 +310,12 @@ export const styles = StyleSheet.create({
     height: entryHeight,
     backgroundColor: mainRed,
   },
-  historyEntryMenuButton: {
-    flex: 1,
-  },
-  historyEntryMenuButtonText: {
+  historyEntryButton: {},
+  historyEntryButtonText: {
     fontSize: WIDTH / 25,
     fontFamily: 'Quicksand-Regular',
     textAlign: 'center',
-    padding: WIDTH / 50,
+    padding: WIDTH / 40,
     color: 'white',
   },
   historyButtonSection: {
@@ -355,13 +359,13 @@ export const styles = StyleSheet.create({
     zIndex: 10,
   },
 
-  // Single run visualizer
-  singleRunVisualizingSection: {
+  // SingleRunGraph
+  singleRunGraph: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  singleRunDisplaySection: {
+  SingleRunGraphInfoSection: {
     flex: 2.5,
     width: standardWidth,
     backgroundColor: mediumBlack,
@@ -372,53 +376,53 @@ export const styles = StyleSheet.create({
     borderWidth: WIDTH / 200,
     borderColor: mainBlue,
   },
-  singleRunDateContainer: {
+  singleRunGraphDateContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  singleRunDateText: {
+  singleRunGraphDateText: {
     fontSize: WIDTH / 15,
     fontFamily: 'Quicksand-Bold',
     color: mainWhite,
   },
-  singleRunDisplayContainer: {
+  singleRunGraphStatsContainer: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  singleRunDisplayText: {
+  singleRunGraphStatsText: {
     fontSize: WIDTH / 20,
     fontFamily: 'Quicksand-Medium',
     textAlign: 'center',
     margin: WIDTH / 40,
     color: mainWhite,
   },
-  singleRunVisualizingButtonSection: {
+  singleRunGraphButtonSection: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
     marginTop: HEIGHT / 50,
   },
-  singleRunVisualizingSelection: {
+  singleRunGraphSelector: {
     width: WIDTH / 4,
-    backgroundColor: '#247BA0',
+    backgroundColor: mainBlue,
     padding: WIDTH / 25,
     position: 'absolute',
     left: 0,
   },
-  singleRunVisualizingButton: {
+  singleRunGraphButton: {
     width: WIDTH / 4,
     padding: WIDTH / 25,
   },
-  singleRunVisualizingButtonText: {
+  singleRunGraphButtonText: {
     fontSize: WIDTH / 30,
     color: 'white',
     textAlign: 'center',
     fontFamily: 'Quicksand-Regular',
   },
-  singleRunChartSection: {
+  singleRunGraphGraphSection: {
     flex: 7,
     backgroundColor: mediumBlack,
     elevation: 10,
@@ -432,146 +436,32 @@ export const styles = StyleSheet.create({
     borderWidth: WIDTH / 200,
     borderColor: mainBlue,
   },
-  singleRunChart: {
+  singleRunGraphGraph: {
     height: HEIGHT / 2.3,
     width: WIDTH / 1.2,
   },
 
-  // All runs visualizer
-  allRunsVisualizingSection: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  allRunsDisplaySection: {
-    marginTop: topMargin,
-    backgroundColor: 'white',
-    width: standardWidth,
-    flex: 1.5,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: WIDTH / 40,
-    elevation: 10,
-  },
-  allRunsDisplayText: {
+  // AllRunsChart
+  AllRunsChartDataText: {
+    textAlign: 'center',
     fontSize: WIDTH / 25,
     fontFamily: 'Quicksand-Medium',
-    textAlign: 'center',
-    color: 'black',
-    padding: WIDTH / 40,
-  },
-  allRunsChartButtonSection: {
-    flex: 1,
-    flexDirection: 'row',
-    marginTop: HEIGHT / 40,
-  },
-  allRunsButtonSelection: {
-    backgroundColor: '#247BA0',
-    position: 'absolute',
-    padding: WIDTH / 50,
-    width: WIDTH / 5,
-    height: HEIGHT / 18,
-  },
-  allRunsChartButton: {
-    padding: WIDTH / 50,
-    width: WIDTH / 5,
-  },
-  allRunsChartButtonText: {
-    fontSize: WIDTH / 30,
-    fontFamily: 'Quicksand-Regular',
-    textAlign: 'center',
     color: 'white',
-  },
-  allRunsWarning: {
-    position: 'absolute',
-    top: '30%',
-  },
-  allRunsWarningText: {
-    fontSize: WIDTH / 12,
-    fontFamily: 'Quicksand-Bold',
-    textAlign: 'center',
-  },
-  allRunsChartSection: {
-    flex: 5,
-    marginTop: HEIGHT / 100,
-    backgroundColor: 'white',
-    borderRadius: WIDTH / 40,
+    borderWidth: WIDTH / 150,
+    borderRadius: WIDTH / 12.5,
     padding: WIDTH / 40,
-    width: standardWidth,
-    elevation: 10,
-    alignItems: 'center',
+    width: standardWidth / 2.1,
+    textAlignVertical: 'center',
+    backgroundColor: mediumBlack,
   },
-  allRunsChart: {
-    height: HEIGHT / 3,
-    width: WIDTH / 1.2,
+  AllRunsChartList: {
+    width: standardWidth / 3.5,
   },
-  allRunsYearMonthSection: {
-    flex: 1,
-    marginTop: HEIGHT / 50,
-    width: standardWidth,
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  allRunsYearMonthText: {
-    width: WIDTH / 8,
+  AllRunsChartItem: {
     textAlign: 'center',
     fontSize: WIDTH / 25,
-    fontFamily: 'Quicksand-Regular',
+    fontFamily: 'Quicksand-Medium',
     color: 'white',
-  },
-  allRunsArrowLeft: {
-    width: 0,
-    height: 0,
-    borderTopColor: 'transparent',
-    borderTopWidth: WIDTH / 25,
-    borderRightColor: '#247BA0',
-    borderRightWidth: WIDTH / 15,
-    borderBottomColor: 'transparent',
-    borderBottomWidth: WIDTH / 25,
-    marginRight: WIDTH / 40,
-  },
-  allRunsArrowRight: {
-    width: 0,
-    height: 0,
-    borderTopColor: 'transparent',
-    borderTopWidth: WIDTH / 25,
-    borderLeftColor: '#247BA0',
-    borderLeftWidth: WIDTH / 15,
-    borderBottomColor: 'transparent',
-    borderBottomWidth: WIDTH / 25,
-    marginLeft: WIDTH / 40,
-  },
-  allRunsTotalSection: {
-    flex: 2,
-    flexDirection: 'row',
-    width: standardWidth,
-    marginTop: HEIGHT / 100,
-    marginBottom: HEIGHT / 50,
-  },
-  allRunsTotalElement: {
-    backgroundColor: 'white',
-    borderRadius: WIDTH / 60,
-    elevation: 5,
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: WIDTH / 50,
-  },
-  allRunsTotalHeader: {
-    fontSize: WIDTH / 25,
-    fontFamily: 'Quicksand-Bold',
-    color: 'black',
-    textAlign: 'center',
-    marginBottom: -HEIGHT / 35,
-  },
-  allRunsTotalText: {
-    fontSize: WIDTH / 30,
-    fontFamily: 'Quicksand-Regular',
-    color: 'black',
-    textAlign: 'center',
-    margin: WIDTH / 50,
-    width: WIDTH / 3,
   },
 
   // Dialogue box
