@@ -13,7 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {backgroundBlack, mainBlueDark, styles, WIDTH} from './styles/styles';
 import * as RNFS from 'react-native-fs';
 import {gpxParser} from './functional/gpxParser';
-import {VisualizerSingleRun} from './components/Visualizer';
+import {SingleRunGraph} from './GraphSingleRun';
 import {extractYearMonthDay} from './functional/functions';
 import {createStackNavigator} from '@react-navigation/stack';
 import {DialogueBox, DialogueBoxWithButtons} from './components/DialogueBoxes';
@@ -52,7 +52,7 @@ const History = (props: HistoryProps) => {
           headerShown: false,
           cardStyle: {backgroundColor: backgroundBlack},
         }}>
-        {props => <VisualizerSingleRun {...props} data={singleRunData} />}
+        {props => <SingleRunGraph {...props} data={singleRunData} />}
       </Stack.Screen>
       <Stack.Screen
         name="AllRunsChart"
