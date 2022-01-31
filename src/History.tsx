@@ -15,7 +15,11 @@ import * as RNFS from 'react-native-fs';
 import {gpxParser} from './functional/gpxParser';
 import {extractYearMonthDay} from './functional/functions';
 import {createStackNavigator} from '@react-navigation/stack';
-import {DialogueBox, DialogueBoxWithButtons} from './components/DialogueBoxes';
+import {
+  DialogueBox,
+  DialogBoxConfirmCancel,
+  DialogBoxThreeButtons,
+} from './components/DialogBoxes';
 import {BackButton, HistoryButton, StandardButton} from './components/Buttons';
 import {ListItem} from './components/ListItem';
 import LoadingCircle from './components/LoadingCircle';
@@ -70,12 +74,18 @@ const AnimatedFlatlist = Animated.createAnimatedComponent(FlatList);
 
 const HistoryMenu = (props: HistoryMenuProps) => {
   const [runs, setRuns] = useState<RunFullInformation[]>([]);
-  const [clearing, setClearing] = useState(false);
-  const [exported, setExported] = useState(false);
-  const [exportedFail, setExportedFail] = useState(false);
-  const [allRunsExported, setAllRunsExported] = useState(false);
   const [loading, setLoading] = useState(false);
   const [runsPrepped, setRunsPrepped] = useState(false);
+  const [clearingSingle, setClearingSingle] = useState(false);
+  const [clearingAll, setClearingAll] = useState(false);
+  const [exportingSingle, setExportingSingle] = useState(false);
+  const [exportingAll, setExportingAll] = useState(false);
+  const [runExportedAsGPX, setRunExportedAsGPX] = useState(false);
+  const [runExportedAsJSON, setRunExportedAsJSON] = useState(false);
+  const [allRunsExportedAsGPX, setAllRunsExportedAsGPX] = useState(false);
+  const [allRunsExportedAsJSON, setAllRunsExportedAsJSON] = useState(false);
+  const [exportedFail, setExportedFail] = useState(false);
+  const [idOfCurrentRun, setIdOfCurrentRun] = useState('');
 
   useEffect(() => {
     const getAllRuns = async () => {
@@ -125,7 +135,7 @@ const HistoryMenu = (props: HistoryMenuProps) => {
     try {
       await AsyncStorage.clear();
       setRuns([]);
-      setClearing(false);
+      setClearingAll(false);
     } catch (err) {
       console.log(err);
     }
@@ -159,25 +169,24 @@ const HistoryMenu = (props: HistoryMenuProps) => {
     return currentRun;
   };
 
-  const exportRun = (id: string) => {
+  const exportRunAsGPX = (id: string) => {
     const currentRun = getRunFromRunsById(id);
     if (currentRun) {
       const path = currentRun.path;
       if (path.length > 0) {
-        const gpx = gpxParser([currentRun]);
+        const data = gpxParser([currentRun]);
         id = id
           .split('')
           .map((char: string) => (char !== ':' ? char : '_'))
           .join('');
-
         RNFS.write(
           RNFS.DownloadDirectoryPath + `/run_${id}.gpx`,
-          gpx,
+          data,
           undefined,
           'ascii',
         )
           .then(res => {
-            setExported(true);
+            setRunExportedAsGPX(true);
           })
           .catch(err => {
             console.log(err);
@@ -187,19 +196,60 @@ const HistoryMenu = (props: HistoryMenuProps) => {
     }
   };
 
-  const exportHistory = () => {
-    if (runs.length === 0) {
-      return;
+  const exportRunAsJSON = (id: string) => {
+    const currentRun = getRunFromRunsById(id);
+    if (currentRun) {
+      const path = currentRun.path;
+      if (path.length > 0) {
+        const data = JSON.stringify({run: currentRun});
+        id = id
+          .split('')
+          .map((char: string) => (char !== ':' ? char : '_'))
+          .join('');
+        RNFS.write(
+          RNFS.DownloadDirectoryPath + `/run_${id}.json`,
+          data,
+          undefined,
+          'ascii',
+        )
+          .then(res => {
+            setRunExportedAsJSON(true);
+          })
+          .catch(err => {
+            console.log(err);
+            setExportedFail(true);
+          });
+      }
     }
-    const gpx = gpxParser(runs);
+  };
+
+  const exportHistoryAsGPX = () => {
+    const data = gpxParser(runs);
     RNFS.write(
       RNFS.DownloadDirectoryPath + `/all_runs.gpx`,
-      gpx,
+      data,
       undefined,
       'ascii',
     )
       .then(res => {
-        setAllRunsExported(true);
+        setAllRunsExportedAsGPX(true);
+      })
+      .catch(err => {
+        console.log(err);
+        setExportedFail(true);
+      });
+  };
+
+  const exportHistoryAsJSON = () => {
+    const data = JSON.stringify({runs: runs});
+    RNFS.write(
+      RNFS.DownloadDirectoryPath + `/all_runs.json`,
+      data,
+      undefined,
+      'ascii',
+    )
+      .then(res => {
+        setAllRunsExportedAsJSON(true);
       })
       .catch(err => {
         console.log(err);
@@ -269,9 +319,10 @@ const HistoryMenu = (props: HistoryMenuProps) => {
         time={item.time}
         distance={item.distance}
         index={index}
-        exportRun={exportRun}
+        exportRun={() => setExportingSingle(true)}
+        deleteRun={() => setClearingSingle(true)}
+        setIdOfCurrentRun={setIdOfCurrentRun}
         visualizeSingleRun={visualizeSingleRun}
-        deleteItem={deleteItem}
         navigate={navigateToSingleRunHistory}
       />
     );
@@ -297,9 +348,7 @@ const HistoryMenu = (props: HistoryMenuProps) => {
       </View>
       <View style={styles.historyButtonSection}>
         <HistoryButton
-          pressHandler={() => {
-            exportHistory();
-          }}
+          pressHandler={() => setExportingAll(runs.length ? true : false)}
           text="Export All"
           buttonStyle={styles.historyButton}
           textStyle={styles.historyButtonText}
@@ -321,7 +370,7 @@ const HistoryMenu = (props: HistoryMenuProps) => {
       </View>
       <View style={styles.historyLowerButtonSection}>
         <HistoryButton
-          pressHandler={() => setClearing(!clearing)}
+          pressHandler={() => setClearingAll(!clearingAll)}
           text="Clear History"
           buttonStyle={[styles.historyButton, {width: WIDTH / 1.1}]}
           textStyle={styles.historyButtonText}
@@ -329,31 +378,92 @@ const HistoryMenu = (props: HistoryMenuProps) => {
           <DeleteIcon />
         </HistoryButton>
       </View>
-      {exported && (
+      {exportingSingle && (
+        <DialogBoxThreeButtons
+          text="Choose the type of export."
+          firstChoiceText="GPX"
+          secondChoiceText="JSON"
+          cancelText="Cancel"
+          firstChoiceAction={() => {
+            setExportingSingle(false);
+            exportRunAsGPX(idOfCurrentRun);
+          }}
+          secondChoiceAction={() => {
+            setExportingSingle(false);
+            exportRunAsJSON(idOfCurrentRun);
+          }}
+          cancelAction={() => setExportingSingle(false)}
+        />
+      )}
+      {exportingAll && (
+        <DialogBoxThreeButtons
+          text="Choose the type of export."
+          firstChoiceText="GPX"
+          secondChoiceText="JSON"
+          cancelText="Cancel"
+          firstChoiceAction={() => {
+            setExportingAll(false);
+            exportHistoryAsGPX();
+          }}
+          secondChoiceAction={() => {
+            setExportingAll(false);
+            exportHistoryAsJSON();
+          }}
+          cancelAction={() => setExportingAll(false)}
+        />
+      )}
+      {runExportedAsGPX && (
         <DialogueBox
-          text="Run has been successfully exported as a gpx file to your download folder!"
-          cancelAction={() => setExported(false)}
+          text="Run has been successfully exported as a GPX file to your download folder."
+          cancelAction={() => setRunExportedAsGPX(false)}
+        />
+      )}
+      {runExportedAsJSON && (
+        <DialogueBox
+          text="Run has been successfully exported as a JSON file to your download folder."
+          cancelAction={() => setRunExportedAsJSON(false)}
+        />
+      )}
+      {allRunsExportedAsGPX && (
+        <DialogueBox
+          text="All runs have been successfully exported as a GPX file to your download folder."
+          cancelAction={() => setAllRunsExportedAsGPX(false)}
+        />
+      )}
+      {allRunsExportedAsJSON && (
+        <DialogueBox
+          text="All runs have been successfully exported as a JSON file to your download folder."
+          cancelAction={() => setAllRunsExportedAsJSON(false)}
         />
       )}
       {exportedFail && (
         <DialogueBox
-          text="Export failed!"
+          text="Export failed."
           cancelAction={() => setExportedFail(false)}
         />
       )}
-      {allRunsExported && (
-        <DialogueBox
-          text="All runs have been successfully exported as a gpx file to your download folder!"
-          cancelAction={() => setAllRunsExported(false)}
+      {clearingSingle && (
+        <DialogBoxConfirmCancel
+          text="Are you sure you want to delete this run?"
+          confirmText="Confirm"
+          cancelText="Cancel"
+          confirmAction={() => {
+            deleteItem(idOfCurrentRun);
+            setClearingSingle(false);
+          }}
+          cancelAction={() => setClearingSingle(false)}
         />
       )}
-      {clearing && (
-        <DialogueBoxWithButtons
+      {clearingAll && (
+        <DialogBoxConfirmCancel
           text="Are you sure you want to delete your running history?"
           confirmText="Confirm"
           cancelText="Cancel"
-          confirmAction={() => clearStorage()}
-          cancelAction={() => setClearing(false)}
+          confirmAction={() => {
+            clearStorage();
+            setClearingAll(false);
+          }}
+          cancelAction={() => setClearingAll(false)}
         />
       )}
     </View>

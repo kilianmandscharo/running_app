@@ -119,17 +119,28 @@ export interface ListItemProps {
   time: number;
   distance: number;
   index: number;
-  exportRun: (id: string) => void;
+  exportRun: () => void;
+  deleteRun: () => void;  
+  setIdOfCurrentRun: React.Dispatch<React.SetStateAction<string>>;
   visualizeSingleRun: (id: string) => boolean;
-  deleteItem: (key: string) => Promise<void>;
   navigate: () => void;
 }
 
-export interface DialogueBoxWithButtonProps {
+export interface DialogBoxConfirmCancelProps {
   text: string;
   confirmText: string;
   cancelText: string;
   confirmAction: any;
+  cancelAction: any;
+}
+
+export interface DialogBoxThreeButtonsProps {
+  text: string;
+  firstChoiceText: string;
+  secondChoiceText: string;
+  cancelText: string;
+  firstChoiceAction: any;
+  secondChoiceAction: any;
   cancelAction: any;
 }
 

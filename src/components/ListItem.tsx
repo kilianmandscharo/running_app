@@ -73,7 +73,6 @@ export const ListItem = (props: ListItemProps) => {
 
   const deleteItem = () => {
     shrinkOnDelete().start();
-    props.deleteItem(props.date);
   };
 
   return (
@@ -111,14 +110,15 @@ export const ListItem = (props: ListItemProps) => {
             <StandardButton
               text="Export"
               pressHandler={() => {
-                props.exportRun(props.date);
+                props.setIdOfCurrentRun(props.date);
+                props.exportRun();
               }}
               buttonStyle={styles.historyEntryButton}
               textStyle={styles.historyEntryButtonText}
               opacity={0.8}
             />
             <StandardButton
-              text="Visualize"
+              text="Graph"
               pressHandler={() => {
                 if (props.visualizeSingleRun(props.date)) {
                   props.navigate();
@@ -130,7 +130,10 @@ export const ListItem = (props: ListItemProps) => {
             />
             <StandardButton
               text="Delete"
-              pressHandler={deleteItem}
+              pressHandler={() => {
+                props.setIdOfCurrentRun(props.date);
+                props.deleteRun();
+              }}
               buttonStyle={[styles.historyEntryButton, {borderTopWidth: 0.8}]}
               textStyle={styles.historyEntryButtonText}
               opacity={0.8}

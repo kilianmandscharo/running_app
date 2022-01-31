@@ -16,7 +16,7 @@ import {backgroundBlack, mainBlueDark, styles} from './styles/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {WakeLockInterface} from 'react-native-android-screen-on';
 import {LockCircle} from './components/LockCircle';
-import {DialogueBoxWithButtons} from './components/DialogueBoxes';
+import {DialogBoxConfirmCancel} from './components/DialogBoxes';
 import {BackButton, RunningSectionButton} from './components/Buttons';
 import VIForegroundService from '@voximplant/react-native-foreground-service';
 import Timer from 'react-native-background-timer-android';
@@ -309,7 +309,7 @@ class Running extends React.Component<RunningProps, RunningState> {
           <BackButton pressHandler={this.handleArrowClick} />
         </View>
         {this.state.backing && (
-          <DialogueBoxWithButtons
+          <DialogBoxConfirmCancel
             text="Are you sure you want to end the run?"
             confirmText="Confirm"
             cancelText="Cancel"
@@ -354,7 +354,7 @@ class Running extends React.Component<RunningProps, RunningState> {
           />
         </View>
         {this.state.locationDialogEnabled && (
-          <DialogueBoxWithButtons
+          <DialogBoxConfirmCancel
             text="Your location has to be enabled to start the run"
             confirmText="Enable Location"
             cancelText="Cancel"

@@ -464,8 +464,8 @@ export const styles = StyleSheet.create({
     color: 'white',
   },
 
-  // Dialogue box
-  dialogueSection: {
+  // Dialog box
+  dialogSection: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     position: 'absolute',
     height: HEIGHT,
@@ -474,18 +474,18 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  dialogueBox: {
+  dialogBox: {
     width: WIDTH / 1.05,
     height: HEIGHT / 2.5,
   },
-  dialogueContainer: {
+  dialogContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: mediumBlack,
     borderRadius: WIDTH / 40,
   },
-  dialogueMessage: {
+  dialogMessage: {
     fontSize: WIDTH / 20,
     width: WIDTH / 1.2,
     fontFamily: 'Quicksand-Bold',
@@ -504,6 +504,20 @@ export const styles = StyleSheet.create({
     backgroundColor: elevatedBlack,
     width: WIDTH / 2,
     marginTop: HEIGHT / 30,
+    padding: WIDTH / 30,
+    elevation: 10,
+  },
+  firstChoiceButton: {
+    backgroundColor: mainBlue,
+    width: WIDTH / 2,
+    marginTop: HEIGHT / 30,
+    padding: WIDTH / 30,
+    elevation: 10,
+  },
+  secondChoiceButton: {
+    backgroundColor: mainRed,
+    width: WIDTH / 2,
+    marginTop: HEIGHT / 60,
     padding: WIDTH / 30,
     elevation: 10,
   },
