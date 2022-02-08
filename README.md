@@ -8,25 +8,25 @@ The app tracks the distance, speed and elevation of your runs and lets you visua
 You can download your runs either as GPX or JSON files to visualize and trace them on a map. 
 
 ## The Menu
-![menu](runner_screenshots/menu.png)
+<img src="runner_screenshots/menu.png" alt="menu" width="200" />
 
 ## Where the running happens 
-![running](runner_screenshots/running.png)
+<img src="runner_screenshots/running.png" alt="menu" width="200" />
 
 Here you record your data while running. After having pressed start you have to hold down on the lock, after which you can pause or end the run.
 
 ## Your running history 
-![history](running_screenshots/history.png)
+<img src="runner_screenshots/history.png" alt="menu" width="200" />
 
 This section shows all your runs. You can flip each run to reveal the options, either to delete, export as a GPX or JSON file, or graph the run.
 You can also delete, export or chart your whole history.
 
 ## Graph a single run
-![graph](running_screenshots/graph.png)
+<img src="runner_screenshots/graph.png" alt="menu" width="200" />
 
 The graph visualizes distance, altitude and speed on the y-axis with the time on the x-axis.
 
 ## Show all your runs by date in a chart
-![chart](running_screenshots/chart.png)
+<img src="runner_screenshots/chart.png" alt="menu" width="200" />
 
 For this chart all your runs are sorted by date, where you are able to scroll through the years, months and days, to display time and distance for each of the runs.
