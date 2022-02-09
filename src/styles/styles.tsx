@@ -252,7 +252,7 @@ export const styles = StyleSheet.create({
     fontSize: WIDTH / 15,
     fontFamily: 'Quicksand-Bold',
     textAlign: 'center',
-    color: 'black',
+    color: mainWhite,
     marginTop: HEIGHT / 30,
   },
   historyListSection: {
