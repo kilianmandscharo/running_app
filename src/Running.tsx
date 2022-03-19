@@ -1,5 +1,12 @@
 import React from 'react';
-import {Text, View, ScrollView, PermissionsAndroid, Alert} from 'react-native';
+import {
+  Text,
+  View,
+  ScrollView,
+  PermissionsAndroid,
+  Alert,
+  BackHandler,
+} from 'react-native';
 import {
   RunningProps,
   Run,
@@ -89,30 +96,8 @@ class Running extends React.Component<RunningProps, RunningState> {
 
   _mounted = false;
 
-  async componentDidMount() {
+  componentDidMount() {
     this._mounted = true;
-
-    const requestLocationPermission = async () => {
-      try {
-        const granted = await request(
-          PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-          {
-            title: 'Runner app location permission',
-            message: 'Runner needs access to your location',
-            buttonNegative: 'Cancel',
-            buttonPositive: 'OK',
-          },
-        );
-        if (granted === RESULTS.GRANTED) {
-          console.log('Granted');
-        } else {
-          console.log('Denied');
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    await requestLocationPermission();
 
     const setWakeLock = WakeLockInterface.setPartialWakeLock()
       .then(res => {
@@ -121,6 +106,11 @@ class Running extends React.Component<RunningProps, RunningState> {
       .catch(err => {
         console.log(err);
       });
+
+    BackHandler.addEventListener(
+      'hardwareBackPress',
+      this.handleHardwareBackPress,
+    );
   }
 
   componentWillUnmount() {
@@ -132,7 +122,21 @@ class Running extends React.Component<RunningProps, RunningState> {
       .catch(err => {
         console.log(err);
       });
+
+    BackHandler.removeEventListener(
+      'hardwareBackPress',
+      this.handleHardwareBackPress,
+    );
   }
+
+  handleHardwareBackPress = () => {
+    if (this.state.started) {
+      this.setState({backing: true});
+    } else {
+      this.goBack();
+    }
+    return true;
+  };
 
   startRun = () => {
     systemSetting.isLocationEnabled().then(enabled => {
