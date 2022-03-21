@@ -265,16 +265,26 @@ class Running extends React.Component<RunningProps, RunningState> {
       const d = JSON.stringify(run.date);
       const stringifiedRun = JSON.stringify(run);
       await AsyncStorage.setItem(JSON.parse(d), stringifiedRun);
+      Timer.clearInterval(this.state.timer);
       this.setState({
+        time: 0,
+        startTime: new Date(),
+        distance: 0,
+        timer: null,
         timeRunning: false,
         started: false,
-        time: 0,
+        currentLocation: {longitude: 0, latitude: 0},
+        newDistance: 0,
         unlocked: false,
+        backing: false,
         runningPath: [],
         runMeasurements: [],
+        wayPoints: [],
+        currentWayPoint: 1,
+        timeToLastWp: 0,
         ended: true,
+        locationDialogEnabled: false,
       });
-      Timer.clearInterval(this.state.timer);
       return true;
     } catch (err) {
       console.log(err);
