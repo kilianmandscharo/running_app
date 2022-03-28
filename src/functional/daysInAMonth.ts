@@ -35,6 +35,15 @@ export const parseMonth = (month: number) => {
   return month < 10 ? `0${month}` : `${month}`;
 };
 
+export const determineDaysInMonth = (month: number, year: number) => {
+  const monthString = parseMonth(month);
+  let days: 28 | 29 | 30 | 31 = daysInAMonth[monthString as Month];
+  if (monthString === '02' && isLeapYear(year)) {
+    days = 29;
+  }
+  return days;
+};
+
 export const getDaysInAMonth = (month: string) => {
   const days = daysInAMonth[month as Month];
   const reVal = [];

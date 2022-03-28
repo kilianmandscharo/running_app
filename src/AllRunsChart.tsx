@@ -17,10 +17,12 @@ import {BackButton} from './components/Buttons';
 import Gradient from './components/Gradient';
 import {
   daysInAMonth,
+  determineDaysInMonth,
   isLeapYear,
   Month,
   parseMonth,
 } from './functional/daysInAMonth';
+import {testDaysInMonth} from './tests/dateTests';
 
 const itemHeight = HEIGHT / 25;
 
@@ -51,7 +53,7 @@ const AllRunsChart = ({allRunsData, navigation}: AllRunsChartProps) => {
 
   const days = [
     -1,
-    ...new Array(daysInAMonth[parseMonth(month) as Month])
+    ...new Array(determineDaysInMonth(month, year))
       .fill(0)
       .map((_, idx) => idx + 1),
     -2,
@@ -82,12 +84,12 @@ const AllRunsChart = ({allRunsData, navigation}: AllRunsChartProps) => {
     }
   }, [month, year]);
 
+  useEffect(() => {
+    testDaysInMonth();
+  }, []);
+
   const getBarOpacity = (runDay: number, idx: number) => {
-    const monthString = parseMonth(month);
-    let days: 28 | 29 | 30 | 31 = daysInAMonth[monthString as Month];
-    if (monthString === '02' && isLeapYear(year)) {
-      days = 29;
-    }
+    const days = determineDaysInMonth(month, year);
     if (idx > days) {
       return 0;
     }
